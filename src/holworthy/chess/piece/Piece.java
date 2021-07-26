@@ -3,8 +3,8 @@ package holworthy.chess.piece;
 import java.util.ArrayList;
 
 import holworthy.chess.Board;
-import holworthy.chess.Move;
 import holworthy.chess.Square;
+import holworthy.chess.move.Move;
 
 public abstract class Piece {
 	public static enum Colour{

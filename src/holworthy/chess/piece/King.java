@@ -3,8 +3,9 @@ package holworthy.chess.piece;
 import java.util.ArrayList;
 
 import holworthy.chess.Board;
-import holworthy.chess.Move;
 import holworthy.chess.Square;
+import holworthy.chess.move.Move;
+import holworthy.chess.move.StandardMove;
 
 public class King extends Piece {
 	public King(Colour colour, Board board) {
@@ -28,7 +29,7 @@ public class King extends Piece {
 				if(dx != 0 || dy != 0) {
 					Square to = getBoard().getSquare(fromX + dx, fromY + dy);
 					if(to != null)
-						moves.add(new Move(from, to));
+						moves.add(new StandardMove(from, to));
 				}
 			}
 		}

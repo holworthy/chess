@@ -3,8 +3,9 @@ package holworthy.chess.piece;
 import java.util.ArrayList;
 
 import holworthy.chess.Board;
-import holworthy.chess.Move;
 import holworthy.chess.Square;
+import holworthy.chess.move.Move;
+import holworthy.chess.move.StandardMove;
 
 public class Bishop extends Piece{
 	public Bishop(Colour colour, Board board){
@@ -24,7 +25,7 @@ public class Bishop extends Piece{
 				Square to = getBoard().getSquare(from.getX() + xChange, from.getY() + yChange);
 				int multiple = 2;
 				while (to != null){
-					moves.add(new Move(from, to));
+					moves.add(new StandardMove(from, to));
 					if (to.getPiece() == null)
 						to = getBoard().getSquare(from.getX() + (xChange*multiple), from.getY() + (yChange*multiple));
 					else

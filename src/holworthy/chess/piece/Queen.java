@@ -3,8 +3,9 @@ package holworthy.chess.piece;
 import java.util.ArrayList;
 
 import holworthy.chess.Board;
-import holworthy.chess.Move;
 import holworthy.chess.Square;
+import holworthy.chess.move.Move;
+import holworthy.chess.move.StandardMove;
 
 public class Queen extends Piece{
 	public Queen(Colour colour, Board board){
@@ -22,7 +23,7 @@ public class Queen extends Piece{
 
 		Square to = getBoard().getSquareAbove(from);
 		while(to != null) {
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 			if(to.getPiece() != null)
 				break;
 			to = getBoard().getSquareAbove(to);
@@ -30,7 +31,7 @@ public class Queen extends Piece{
 
 		to = getBoard().getSquareAboveRight(from);
 		while(to != null) {
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 			if(to.getPiece() != null)
 				break;
 			to = getBoard().getSquareAboveRight(from);
@@ -38,7 +39,7 @@ public class Queen extends Piece{
 
 		to = getBoard().getSquareRight(from);
 		while(to != null) {
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 			if(to.getPiece() != null)
 				break;
 			to = getBoard().getSquareRight(to);
@@ -46,7 +47,7 @@ public class Queen extends Piece{
 
 		to = getBoard().getSquareBelowRight(from);
 		while(to != null) {
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 			if(to.getPiece() != null)
 				break;
 			to = getBoard().getSquareBelowRight(from);
@@ -54,7 +55,7 @@ public class Queen extends Piece{
 
 		to = getBoard().getSquareBelow(from);
 		while(to != null) {
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 			if(to.getPiece() != null)
 				break;
 			to = getBoard().getSquareBelow(to);
@@ -62,7 +63,7 @@ public class Queen extends Piece{
 
 		to = getBoard().getSquareAboveLeft(from);
 		while(to != null) {
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 			if(to.getPiece() != null)
 				break;
 			to = getBoard().getSquareAboveLeft(from);
@@ -70,7 +71,7 @@ public class Queen extends Piece{
 
 		to = getBoard().getSquareLeft(from);
 		while(to != null) {
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 			if(to.getPiece() != null)
 				break;
 			to = getBoard().getSquareLeft(to);
@@ -78,7 +79,7 @@ public class Queen extends Piece{
 
 		to = getBoard().getSquareBelowLeft(from);
 		while(to != null) {
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 			if(to.getPiece() != null)
 				break;
 			to = getBoard().getSquareBelowLeft(from);

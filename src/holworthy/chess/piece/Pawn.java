@@ -3,8 +3,9 @@ package holworthy.chess.piece;
 import java.util.ArrayList;
 
 import holworthy.chess.Board;
-import holworthy.chess.Move;
 import holworthy.chess.Square;
+import holworthy.chess.move.Move;
+import holworthy.chess.move.StandardMove;
 
 public class Pawn extends Piece{
 	private boolean moved = false;
@@ -24,21 +25,21 @@ public class Pawn extends Piece{
 		if (this.getColour() == Colour.WHITE){
 			Square to = getBoard().getSquare(from.getX(), from.getY() - 1);
 			if (to != null)
-				moves.add(new Move(from, to));
+				moves.add(new StandardMove(from, to));
 			if (!moved && to.getPiece() == null){
 				to = getBoard().getSquare(from.getX(), from.getY() - 2);
 				if (to != null)
-					moves.add(new Move(from, to));
+					moves.add(new StandardMove(from, to));
 			}
 		}
 		else{
 			Square to = getBoard().getSquare(from.getX(), from.getY() + 1);
 			if (to != null)
-				moves.add(new Move(from, to));
+				moves.add(new StandardMove(from, to));
 			if (!moved && to.getPiece() == null){
 				to = getBoard().getSquare(from.getX(), from.getY() + 2);
 				if (to != null)
-					moves.add(new Move(from, to));
+					moves.add(new StandardMove(from, to));
 			}
 		}
 		return moves;

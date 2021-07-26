@@ -2,6 +2,9 @@ package holworthy.chess;
 
 import java.util.ArrayList;
 
+import holworthy.chess.move.CastlingMove;
+import holworthy.chess.move.Move;
+import holworthy.chess.move.StandardMove;
 import holworthy.chess.piece.King;
 import holworthy.chess.piece.Piece;
 
@@ -19,26 +22,38 @@ public class Chess {
 	}
 
 	public void makeMove(Move move) {
-		if(move.getFrom().getPiece() == null || move.getFrom().getPiece().getColour() != whosTurn) {
-			// TODO: can only move own pieces
-			return;
-		}
-
-		if(move.getTo().getPiece() != null && move.getTo().getPiece().getColour() == whosTurn) {
-			// TODO: cannot move onto own piece
-			return;
-		}
-
-		Square from = move.getFrom();
-		Square to = move.getTo();
-
 		if(!board.generateMoves(whosTurn).contains(move)) {
 			return;
 		}
+		
+		if(move instanceof StandardMove) {
+			StandardMove standardMove = (StandardMove) move;
+			if(standardMove.getFrom().getPiece() == null || standardMove.getFrom().getPiece().getColour() != whosTurn) {
+				// TODO: can only move own pieces
+				return;
+			}
 
-		capturedPieces.add(to.getPiece());
-		to.setPiece(from.getPiece());
-		from.setPiece(null);
+			if(standardMove.getTo().getPiece() != null && standardMove.getTo().getPiece().getColour() == whosTurn) {
+				// TODO: cannot move onto own piece
+				return;
+			}
+
+			Square from = standardMove.getFrom();
+			Square to = standardMove.getTo();
+
+			capturedPieces.add(to.getPiece());
+			to.setPiece(from.getPiece());
+			from.setPiece(null);
+		} else if(move instanceof CastlingMove) {
+			// TODO: do castling
+			return;
+		}
+
+		if(isInCheck(whosTurn)) {
+			undoMove();
+			// TODO: announce check issue
+			return;
+		}
 
 		whosTurn = whosTurn.other();
 	}
@@ -72,15 +87,21 @@ public class Chess {
 		int toX = toFile - 'a';
 		int toY = 7 - (toRank - '1');
 
-		makeMove(new Move(board.getSquare(fromX, fromY), board.getSquare(toX, toY)));
+		makeMove(new StandardMove(board.getSquare(fromX, fromY), board.getSquare(toX, toY)));
 	}
 
 	public void undoMove() {
 		Move lastMove = moves.remove(moves.size() - 1);
-		Square from = lastMove.getFrom();
-		Square to = lastMove.getTo();
-		from.setPiece(to.getPiece());
-		to.setPiece(capturedPieces.remove(capturedPieces.size() - 1));
+
+		if(lastMove instanceof StandardMove) {
+			StandardMove standardMove = (StandardMove) lastMove;
+			Square from = standardMove.getFrom();
+			Square to = standardMove.getTo();
+			from.setPiece(to.getPiece());
+			to.setPiece(capturedPieces.remove(capturedPieces.size() - 1));
+		} else if(lastMove instanceof CastlingMove) {
+
+		}
 	}
 
 	public Board getBoard() {
@@ -103,9 +124,13 @@ public class Chess {
 		ArrayList<Move> moves = board.generateMoves(colour.other());
 		Square kingSquare = kingSquare(colour);
 
-		for(Move move : moves)
-			if(move.getTo() == kingSquare)
-				return true;
+		for(Move move : moves) {
+			if(move instanceof StandardMove) {
+				StandardMove standardMove = (StandardMove) move;
+				if(standardMove.getTo() == kingSquare)
+					return true;
+			}
+		}
 
 		return false;
 	}

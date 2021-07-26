@@ -3,8 +3,9 @@ package holworthy.chess.piece;
 import java.util.ArrayList;
 
 import holworthy.chess.Board;
-import holworthy.chess.Move;
 import holworthy.chess.Square;
+import holworthy.chess.move.Move;
+import holworthy.chess.move.StandardMove;
 
 public class Rook extends Piece{
 	public Rook(Colour colour, Board board){
@@ -22,7 +23,7 @@ public class Rook extends Piece{
 
 		Square to = getBoard().getSquareAbove(from);
 		while(to != null) {
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 			if(to.getPiece() != null)
 				break;
 			to = getBoard().getSquareAbove(to);
@@ -30,7 +31,7 @@ public class Rook extends Piece{
 
 		to = getBoard().getSquareRight(from);
 		while(to != null) {
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 			if(to.getPiece() != null)
 				break;
 			to = getBoard().getSquareRight(to);
@@ -38,7 +39,7 @@ public class Rook extends Piece{
 
 		to = getBoard().getSquareBelow(from);
 		while(to != null) {
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 			if(to.getPiece() != null)
 				break;
 			to = getBoard().getSquareBelow(to);
@@ -46,7 +47,7 @@ public class Rook extends Piece{
 
 		to = getBoard().getSquareLeft(from);
 		while(to != null) {
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 			if(to.getPiece() != null)
 				break;
 			to = getBoard().getSquareLeft(to);

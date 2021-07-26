@@ -2,6 +2,7 @@ package holworthy.chess;
 
 import java.util.ArrayList;
 
+import holworthy.chess.move.Move;
 import holworthy.chess.piece.Bishop;
 import holworthy.chess.piece.King;
 import holworthy.chess.piece.Knight;

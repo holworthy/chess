@@ -3,8 +3,9 @@ package holworthy.chess.piece;
 import java.util.ArrayList;
 
 import holworthy.chess.Board;
-import holworthy.chess.Move;
 import holworthy.chess.Square;
+import holworthy.chess.move.Move;
+import holworthy.chess.move.StandardMove;
 
 public class Knight extends Piece{
 	public Knight(Colour colour, Board board){
@@ -25,28 +26,28 @@ public class Knight extends Piece{
 
 		Square to = getBoard().getSquare(fromX + 1, fromY - 2);
 		if(to != null)
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 		to = getBoard().getSquare(fromX - 1, fromY - 2);
 		if(to != null)
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 		to = getBoard().getSquare(fromX + 2, fromY - 1);
 		if(to != null)
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 		to = getBoard().getSquare(fromX - 2, fromY - 1);
 		if(to != null)
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 		to = getBoard().getSquare(fromX + 1, fromY + 2);
 		if(to != null)
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 		to = getBoard().getSquare(fromX - 1, fromY + 2);
 		if(to != null)
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 		to = getBoard().getSquare(fromX + 2, fromY + 1);
 		if(to != null)
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 		to = getBoard().getSquare(fromX - 2, fromY + 1);
 		if(to != null)
-			moves.add(new Move(from, to));
+			moves.add(new StandardMove(from, to));
 
 		return moves;
 	}

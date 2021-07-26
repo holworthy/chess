@@ -1,10 +1,12 @@
-package holworthy.chess;
+package holworthy.chess.move;
 
-public class Move {
+import holworthy.chess.Square;
+
+public class StandardMove extends Move {
 	private Square from;
 	private Square to;
 
-	public Move(Square from, Square to){
+	public StandardMove(Square from, Square to){
 		this.from = from;
 		this.to = to;
 	}
@@ -19,9 +21,9 @@ public class Move {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Move))
+		if(!(obj instanceof StandardMove))
 			return false;
-		Move move = (Move) obj;
+		StandardMove move = (StandardMove) obj;
 		return from.equals(move.getFrom()) && to.equals(move.getTo());
 	}
 
