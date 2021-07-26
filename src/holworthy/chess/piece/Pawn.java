@@ -15,7 +15,7 @@ public class Pawn extends Piece{
 
 	@Override
 	public char getCharacter() {
-		return 'P';
+		return getColour() == Colour.WHITE ? 'P' : 'p';
 	}
 
 	@Override

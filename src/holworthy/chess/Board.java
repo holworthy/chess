@@ -58,8 +58,18 @@ public class Board {
 		return string;
 	}
 
-	public ArrayList<Move> generateMoves() {
-		return null;
+	public ArrayList<Move> generateMoves(Piece.Colour colour) {
+		ArrayList<Move> moves = new ArrayList<>();
+
+		for(int y = 0; y < 8; y++) {
+			for(int x = 0; x < 8; x++) {
+				Square square = getSquare(x, y);
+				if(square.getPiece() != null && square.getPiece().getColour() == colour)
+					moves.addAll(square.getPiece().generateMoves(square));
+			}
+		}
+
+		return moves;
 	}
 
 	public Square getSquare(int x, int y) {

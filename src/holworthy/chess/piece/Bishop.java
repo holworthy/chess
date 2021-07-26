@@ -13,7 +13,7 @@ public class Bishop extends Piece{
 
 	@Override
 	public char getCharacter() {
-		return 'B';
+		return getColour() == Colour.WHITE ? 'B' : 'b';
 	}
 
 	@Override

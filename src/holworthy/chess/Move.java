@@ -8,5 +8,12 @@ public class Move {
 		this.from = from;
 		this.to = to;
 	}
-		
+
+	public Square getFrom() {
+		return from;
+	}
+
+	public Square getTo() {
+		return to;
+	}	
 }
