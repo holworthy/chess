@@ -18,6 +18,36 @@ public class Knight extends Piece{
 
 	@Override
 	public ArrayList<Move> generateMoves(Square from) {
-		return null;
+		ArrayList<Move> moves = new ArrayList<>();
+
+		int fromX = from.getX();
+		int fromY = from.getY();
+
+		Square to = getBoard().getSquare(fromX + 1, fromY - 2);
+		if(to != null)
+			moves.add(new Move(from, to));
+		to = getBoard().getSquare(fromX - 1, fromY - 2);
+		if(to != null)
+			moves.add(new Move(from, to));
+		to = getBoard().getSquare(fromX + 2, fromY - 1);
+		if(to != null)
+			moves.add(new Move(from, to));
+		to = getBoard().getSquare(fromX - 2, fromY - 1);
+		if(to != null)
+			moves.add(new Move(from, to));
+		to = getBoard().getSquare(fromX + 1, fromY + 2);
+		if(to != null)
+			moves.add(new Move(from, to));
+		to = getBoard().getSquare(fromX - 1, fromY + 2);
+		if(to != null)
+			moves.add(new Move(from, to));
+		to = getBoard().getSquare(fromX + 2, fromY + 1);
+		if(to != null)
+			moves.add(new Move(from, to));
+		to = getBoard().getSquare(fromX - 2, fromY + 1);
+		if(to != null)
+			moves.add(new Move(from, to));
+
+		return moves;
 	}
 }
