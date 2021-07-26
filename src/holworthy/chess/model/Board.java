@@ -1,15 +1,15 @@
-package holworthy.chess;
+package holworthy.chess.model;
 
 import java.util.ArrayList;
 
-import holworthy.chess.move.Move;
-import holworthy.chess.piece.Bishop;
-import holworthy.chess.piece.King;
-import holworthy.chess.piece.Knight;
-import holworthy.chess.piece.Pawn;
-import holworthy.chess.piece.Piece;
-import holworthy.chess.piece.Queen;
-import holworthy.chess.piece.Rook;
+import holworthy.chess.model.move.Move;
+import holworthy.chess.model.piece.Bishop;
+import holworthy.chess.model.piece.King;
+import holworthy.chess.model.piece.Knight;
+import holworthy.chess.model.piece.Pawn;
+import holworthy.chess.model.piece.Piece;
+import holworthy.chess.model.piece.Queen;
+import holworthy.chess.model.piece.Rook;
 
 public class Board {
 	private Square[][] squares;

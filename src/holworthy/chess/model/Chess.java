@@ -1,12 +1,12 @@
-package holworthy.chess;
+package holworthy.chess.model;
 
 import java.util.ArrayList;
 
-import holworthy.chess.move.CastlingMove;
-import holworthy.chess.move.Move;
-import holworthy.chess.move.StandardMove;
-import holworthy.chess.piece.King;
-import holworthy.chess.piece.Piece;
+import holworthy.chess.model.move.CastlingMove;
+import holworthy.chess.model.move.Move;
+import holworthy.chess.model.move.StandardMove;
+import holworthy.chess.model.piece.King;
+import holworthy.chess.model.piece.Piece;
 
 public class Chess {
 	private Board board;

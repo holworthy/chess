@@ -1,11 +1,11 @@
-package holworthy.chess.piece;
+package holworthy.chess.model.piece;
 
 import java.util.ArrayList;
 
-import holworthy.chess.Board;
-import holworthy.chess.Square;
-import holworthy.chess.move.Move;
-import holworthy.chess.move.StandardMove;
+import holworthy.chess.model.Board;
+import holworthy.chess.model.Square;
+import holworthy.chess.model.move.Move;
+import holworthy.chess.model.move.StandardMove;
 
 public class Pawn extends Piece{
 	private boolean moved = false;

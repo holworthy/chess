@@ -1,10 +1,10 @@
-package holworthy.chess.piece;
+package holworthy.chess.model.piece;
 
 import java.util.ArrayList;
 
-import holworthy.chess.Board;
-import holworthy.chess.Square;
-import holworthy.chess.move.Move;
+import holworthy.chess.model.Board;
+import holworthy.chess.model.Square;
+import holworthy.chess.model.move.Move;
 
 public abstract class Piece {
 	public static enum Colour{

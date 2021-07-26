@@ -1,4 +1,4 @@
-package holworthy.chess.move;
+package holworthy.chess.model.move;
 
 public class CastlingMove extends Move {
 	public static enum Side {

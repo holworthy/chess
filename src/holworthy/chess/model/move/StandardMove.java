@@ -1,6 +1,6 @@
-package holworthy.chess.move;
+package holworthy.chess.model.move;
 
-import holworthy.chess.Square;
+import holworthy.chess.model.Square;
 
 public class StandardMove extends Move {
 	private Square from;

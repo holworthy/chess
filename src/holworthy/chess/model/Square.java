@@ -1,6 +1,6 @@
-package holworthy.chess;
+package holworthy.chess.model;
 
-import holworthy.chess.piece.Piece;
+import holworthy.chess.model.piece.Piece;
 
 public class Square {
 	private int x;
