@@ -16,32 +16,32 @@ public class Board {
 	public Board() {
 		squares = new Square[8][8];
 
-		squares[0][0] = new Square(0, 0, new Rook(Piece.Colour.BLACK));
-		squares[0][1] = new Square(0, 1, new Knight(Piece.Colour.BLACK));
-		squares[0][2] = new Square(0, 2, new Bishop(Piece.Colour.BLACK));
-		squares[0][3] = new Square(0, 3, new Queen(Piece.Colour.BLACK));
-		squares[0][4] = new Square(0, 4, new King(Piece.Colour.BLACK));
-		squares[0][5] = new Square(0, 5, new Bishop(Piece.Colour.BLACK));
-		squares[0][6] = new Square(0, 6, new Knight(Piece.Colour.BLACK));
-		squares[0][7] = new Square(0, 7, new Rook(Piece.Colour.BLACK));
+		squares[0][0] = new Square(0, 0, new Rook(Piece.Colour.BLACK, this));
+		squares[0][1] = new Square(0, 1, new Knight(Piece.Colour.BLACK, this));
+		squares[0][2] = new Square(0, 2, new Bishop(Piece.Colour.BLACK, this));
+		squares[0][3] = new Square(0, 3, new Queen(Piece.Colour.BLACK, this));
+		squares[0][4] = new Square(0, 4, new King(Piece.Colour.BLACK, this));
+		squares[0][5] = new Square(0, 5, new Bishop(Piece.Colour.BLACK, this));
+		squares[0][6] = new Square(0, 6, new Knight(Piece.Colour.BLACK, this));
+		squares[0][7] = new Square(0, 7, new Rook(Piece.Colour.BLACK, this));
 
 		for(int x = 0; x < 8; x++) {
-			squares[1][x] = new Square(1, x, new Pawn(Piece.Colour.BLACK));
-			squares[6][x] = new Square(6, x, new Pawn(Piece.Colour.WHITE));
+			squares[1][x] = new Square(1, x, new Pawn(Piece.Colour.BLACK, this));
+			squares[6][x] = new Square(6, x, new Pawn(Piece.Colour.WHITE, this));
 		}
 
 		for(int y = 2; y < 6; y++)
 			for(int x = 0; x < 8; x++)
 				squares[y][x] = new Square(x, y, null);
 
-		squares[7][0] = new Square(7, 0, new Rook(Piece.Colour.WHITE));
-		squares[7][1] = new Square(7, 1, new Knight(Piece.Colour.WHITE));
-		squares[7][2] = new Square(7, 2, new Bishop(Piece.Colour.WHITE));
-		squares[7][3] = new Square(7, 3, new Queen(Piece.Colour.WHITE));
-		squares[7][4] = new Square(7, 4, new King(Piece.Colour.WHITE));
-		squares[7][5] = new Square(7, 5, new Bishop(Piece.Colour.WHITE));
-		squares[7][6] = new Square(7, 6, new Knight(Piece.Colour.WHITE));
-		squares[7][7] = new Square(7, 7, new Rook(Piece.Colour.WHITE));
+		squares[7][0] = new Square(7, 0, new Rook(Piece.Colour.WHITE, this));
+		squares[7][1] = new Square(7, 1, new Knight(Piece.Colour.WHITE, this));
+		squares[7][2] = new Square(7, 2, new Bishop(Piece.Colour.WHITE, this));
+		squares[7][3] = new Square(7, 3, new Queen(Piece.Colour.WHITE, this));
+		squares[7][4] = new Square(7, 4, new King(Piece.Colour.WHITE, this));
+		squares[7][5] = new Square(7, 5, new Bishop(Piece.Colour.WHITE, this));
+		squares[7][6] = new Square(7, 6, new Knight(Piece.Colour.WHITE, this));
+		squares[7][7] = new Square(7, 7, new Rook(Piece.Colour.WHITE, this));
 	}
 
 	@Override
@@ -60,6 +60,12 @@ public class Board {
 
 	public ArrayList<Move> generateMoves() {
 		return null;
+	}
+
+	public Square getSquare(int x, int y) {
+		if(x < 0 || x > 7 || y < 0 || y > 7)
+			return null;
+		return squares[y][x];
 	}
 
 	public static void main(String[] args) {
