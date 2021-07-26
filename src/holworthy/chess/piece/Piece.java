@@ -1,5 +1,5 @@
 package holworthy.chess.piece;
 
-public class Piece {
+abstract public class Piece {
 	
 }
