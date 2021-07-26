@@ -25,7 +25,7 @@ public class Pawn extends Piece{
 			Square to = getBoard().getSquare(from.getX(), from.getY() - 1);
 			if (to != null)
 				moves.add(new Move(from, to));
-			if (!moved){
+			if (!moved && to.getPiece() == null){
 				to = getBoard().getSquare(from.getX(), from.getY() - 2);
 				if (to != null)
 					moves.add(new Move(from, to));
@@ -35,7 +35,7 @@ public class Pawn extends Piece{
 			Square to = getBoard().getSquare(from.getX(), from.getY() + 1);
 			if (to != null)
 				moves.add(new Move(from, to));
-			if (!moved){
+			if (!moved && to.getPiece() == null){
 				to = getBoard().getSquare(from.getX(), from.getY() + 2);
 				if (to != null)
 					moves.add(new Move(from, to));
