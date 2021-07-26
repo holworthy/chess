@@ -18,6 +18,18 @@ public class Bishop extends Piece{
 
 	@Override
 	public ArrayList<Move> generateMoves(Square from) {
-		return null;
+		ArrayList<Move> moves = new ArrayList<>();
+		for (int xChange = -1; xChange <= 1; xChange += 2){
+			for (int yChange = -1; yChange <= 1; yChange += 2){
+				Square to = getBoard().getSquare(from.getX() + xChange, from.getY() + yChange);
+				int multiple = 2;
+				while (to != null){
+					moves.add(new Move(from, to));
+					to = getBoard().getSquare(from.getX() + (xChange*multiple), from.getY() + (yChange*multiple));
+					multiple++;
+				}
+			}
+		}
+		return moves;
 	}
 }

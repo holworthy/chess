@@ -7,6 +7,8 @@ import holworthy.chess.Move;
 import holworthy.chess.Square;
 
 public class Pawn extends Piece{
+	private boolean moved = false;
+
 	public Pawn(Colour colour, Board board){
 		super(colour, board);
 	}
@@ -18,7 +20,27 @@ public class Pawn extends Piece{
 
 	@Override
 	public ArrayList<Move> generateMoves(Square from) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Move> moves = new ArrayList<>();
+		if (this.getColour() == Colour.WHITE){
+			Square to = getBoard().getSquare(from.getX(), from.getY() - 1);
+			if (to != null)
+				moves.add(new Move(from, to));
+			if (!moved){
+				to = getBoard().getSquare(from.getX(), from.getY() - 2);
+				if (to != null)
+					moves.add(new Move(from, to));
+			}
+		}
+		else{
+			Square to = getBoard().getSquare(from.getX(), from.getY() + 1);
+			if (to != null)
+				moves.add(new Move(from, to));
+			if (!moved){
+				to = getBoard().getSquare(from.getX(), from.getY() + 2);
+				if (to != null)
+					moves.add(new Move(from, to));
+			}
+		}
+		return moves;
 	}
 }
