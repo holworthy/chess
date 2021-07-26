@@ -58,6 +58,12 @@ public class Board {
 		return string;
 	}
 
+
+	// TODO: no white on white action
+	// TODO: no black on black action
+	// TODO: en passant
+	// TODO: castling
+	// TODO: no invalid moves when in check
 	public ArrayList<Move> generateMoves(Piece.Colour colour) {
 		ArrayList<Move> moves = new ArrayList<>();
 

@@ -10,6 +10,10 @@ public abstract class Piece {
 	public static enum Colour{
 		WHITE,
 		BLACK;
+
+		public Colour other() {
+			return this == WHITE ? BLACK : WHITE;
+		}
 	}
 
 	private Colour colour;
