@@ -24,8 +24,8 @@ public class Board {
 		squares[0][7] = new Square(0, 7, new Rook(Piece.Colour.BLACK));
 
 		for(int x = 0; x < 8; x++) {
-			squares[1][x] = new Square(0, x, new Pawn(Piece.Colour.BLACK));
-			squares[6][x] = new Square(7, x, new Pawn(Piece.Colour.WHITE));
+			squares[1][x] = new Square(1, x, new Pawn(Piece.Colour.BLACK));
+			squares[6][x] = new Square(6, x, new Pawn(Piece.Colour.WHITE));
 		}
 
 		for(int y = 2; y < 6; y++)
