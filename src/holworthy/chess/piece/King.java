@@ -19,6 +19,20 @@ public class King extends Piece {
 	@Override
 	public ArrayList<Move> generateMoves(Square from) {
 		ArrayList<Move> moves = new ArrayList<>();
+
+		int fromX = from.getX();
+		int fromY = from.getY();
+
+		for(int dy = -1; dy <= 1; dy++) {
+			for(int dx = -1; dx <= 1; dx++) {
+				if(dx != 0 || dy != 0) {
+					Square to = getBoard().getSquare(fromX + dx, fromY + dy);
+					if(to != null)
+						moves.add(new Move(from, to));
+				}
+			}
+		}
+
 		return moves;
 	}
 }
