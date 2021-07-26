@@ -13,7 +13,7 @@ public class Rook extends Piece{
 
 	@Override
 	public char getCharacter() {
-		return 'R';
+		return getColour() == Colour.WHITE ? 'R' : 'r';
 	}
 
 	@Override

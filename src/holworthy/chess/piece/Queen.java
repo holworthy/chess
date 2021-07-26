@@ -13,7 +13,7 @@ public class Queen extends Piece{
 
 	@Override
 	public char getCharacter() {
-		return 'Q';
+		return getColour() == Colour.WHITE ? 'Q' : 'q';
 	}
 
 	@Override

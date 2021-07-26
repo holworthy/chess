@@ -13,7 +13,7 @@ public class King extends Piece {
 
 	@Override
 	public char getCharacter() {
-		return 'K';
+		return getColour() == Colour.WHITE ? 'K' : 'k';
 	}
 
 	@Override
