@@ -1,7 +1,12 @@
 package holworthy.chess.piece;
 
 public class Pawn extends Piece{
-	Pawn(Colour colour){
+	public Pawn(Colour colour){
 		super(colour);
+	}
+
+	@Override
+	public char getCharacter() {
+		return 'P';
 	}
 }

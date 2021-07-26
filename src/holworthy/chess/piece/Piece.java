@@ -1,6 +1,6 @@
 package holworthy.chess.piece;
 
-abstract public class Piece {
+public abstract class Piece {
 	private Colour colour;
 
 	public static enum Colour{
@@ -8,7 +8,9 @@ abstract public class Piece {
 		BLACK;
 	}
 
-	Piece(Colour colour){
+	public Piece(Colour colour){
 		this.colour = colour;
 	}
+
+	public abstract char getCharacter();
 }

@@ -1,5 +1,63 @@
 package holworthy.chess;
 
+import holworthy.chess.piece.Bishop;
+import holworthy.chess.piece.King;
+import holworthy.chess.piece.Knight;
+import holworthy.chess.piece.Pawn;
+import holworthy.chess.piece.Piece;
+import holworthy.chess.piece.Queen;
+import holworthy.chess.piece.Rook;
+
 public class Board {
-	
+	private Square[][] squares;
+
+	public Board() {
+		squares = new Square[8][8];
+
+		squares[0][0] = new Square(0, 0, new Rook(Piece.Colour.BLACK));
+		squares[0][1] = new Square(0, 1, new Knight(Piece.Colour.BLACK));
+		squares[0][2] = new Square(0, 2, new Bishop(Piece.Colour.BLACK));
+		squares[0][3] = new Square(0, 3, new Queen(Piece.Colour.BLACK));
+		squares[0][4] = new Square(0, 4, new King(Piece.Colour.BLACK));
+		squares[0][5] = new Square(0, 5, new Bishop(Piece.Colour.BLACK));
+		squares[0][6] = new Square(0, 6, new Knight(Piece.Colour.BLACK));
+		squares[0][7] = new Square(0, 7, new Rook(Piece.Colour.BLACK));
+
+		for(int x = 0; x < 8; x++) {
+			squares[1][x] = new Square(0, x, new Pawn(Piece.Colour.BLACK));
+			squares[6][x] = new Square(7, x, new Pawn(Piece.Colour.WHITE));
+		}
+
+		for(int y = 2; y < 6; y++)
+			for(int x = 0; x < 8; x++)
+				squares[y][x] = new Square(x, y, null);
+
+		squares[7][0] = new Square(7, 0, new Rook(Piece.Colour.WHITE));
+		squares[7][1] = new Square(7, 1, new Knight(Piece.Colour.WHITE));
+		squares[7][2] = new Square(7, 2, new Bishop(Piece.Colour.WHITE));
+		squares[7][3] = new Square(7, 3, new Queen(Piece.Colour.WHITE));
+		squares[7][4] = new Square(7, 4, new King(Piece.Colour.WHITE));
+		squares[7][5] = new Square(7, 5, new Bishop(Piece.Colour.WHITE));
+		squares[7][6] = new Square(7, 6, new Knight(Piece.Colour.WHITE));
+		squares[7][7] = new Square(7, 7, new Rook(Piece.Colour.WHITE));
+	}
+
+	@Override
+	public String toString() {
+		String string = "";
+
+		for(int y = 0; y < 8; y++) {
+			for(int x = 0; x < 8; x++) {
+				string += squares[y][x].getPiece() == null ? '.' : squares[y][x].getPiece().getCharacter();
+			}
+			string += "\n";
+		}
+
+		return string;
+	}
+
+	public static void main(String[] args) {
+		Board board = new Board();
+		System.out.println(board);
+	}
 }
