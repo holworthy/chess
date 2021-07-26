@@ -101,6 +101,22 @@ public class Board {
 		return getSquare(square.getX() - 1, square.getY());
 	}
 
+	public Square getSquareAboveRight(Square square) {
+		return getSquare(square.getX() + 1, square.getY() - 1);
+	}
+
+	public Square getSquareAboveLeft(Square square) {
+		return getSquare(square.getX() - 1, square.getY() - 1);
+	}
+
+	public Square getSquareBelowRight(Square square) {
+		return getSquare(square.getX() + 1, square.getY() + 1);
+	}
+
+	public Square getSquareBelowLeft(Square square) {
+		return getSquare(square.getX() - 1, square.getY() + 1);
+	}
+
 	public static void main(String[] args) {
 		Board board = new Board();
 		System.out.println(board);

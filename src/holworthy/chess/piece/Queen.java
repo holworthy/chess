@@ -20,19 +20,68 @@ public class Queen extends Piece{
 	public ArrayList<Move> generateMoves(Square from) {
 		ArrayList<Move> moves = new ArrayList<>();
 
-		int fromX = from.getX();
-		int fromY = from.getY();
+		Square to = getBoard().getSquareAbove(from);
+		while(to != null) {
+			moves.add(new Move(from, to));
+			if(to.getPiece() != null)
+				break;
+			to = getBoard().getSquareAbove(to);
+		}
 
-		for(int multiplier = 1; multiplier < 8; multiplier++) {
-			for(int dy = -1; dy <= 1; dy++) {
-				for(int dx = -1; dx <= 1; dx++) {
-					if(dx != 0 || dy != 0) {
-						Square to = getBoard().getSquare(fromX + dx * multiplier, fromY + dy * multiplier);
-						if(to != null)
-							moves.add(new Move(from, to));
-					}
-				}
-			}
+		to = getBoard().getSquareAboveRight(from);
+		while(to != null) {
+			moves.add(new Move(from, to));
+			if(to.getPiece() != null)
+				break;
+			to = getBoard().getSquareAboveRight(from);
+		}
+
+		to = getBoard().getSquareRight(from);
+		while(to != null) {
+			moves.add(new Move(from, to));
+			if(to.getPiece() != null)
+				break;
+			to = getBoard().getSquareRight(to);
+		}
+
+		to = getBoard().getSquareBelowRight(from);
+		while(to != null) {
+			moves.add(new Move(from, to));
+			if(to.getPiece() != null)
+				break;
+			to = getBoard().getSquareBelowRight(from);
+		}
+
+		to = getBoard().getSquareBelow(from);
+		while(to != null) {
+			moves.add(new Move(from, to));
+			if(to.getPiece() != null)
+				break;
+			to = getBoard().getSquareBelow(to);
+		}
+
+		to = getBoard().getSquareAboveLeft(from);
+		while(to != null) {
+			moves.add(new Move(from, to));
+			if(to.getPiece() != null)
+				break;
+			to = getBoard().getSquareAboveLeft(from);
+		}
+
+		to = getBoard().getSquareLeft(from);
+		while(to != null) {
+			moves.add(new Move(from, to));
+			if(to.getPiece() != null)
+				break;
+			to = getBoard().getSquareLeft(to);
+		}
+
+		to = getBoard().getSquareBelowLeft(from);
+		while(to != null) {
+			moves.add(new Move(from, to));
+			if(to.getPiece() != null)
+				break;
+			to = getBoard().getSquareBelowLeft(from);
 		}
 
 		return moves;

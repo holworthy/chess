@@ -52,7 +52,6 @@ public class Rook extends Piece{
 			to = getBoard().getSquareLeft(to);
 		}
 
-
 		return moves;
 	}
 }
