@@ -2,6 +2,7 @@ package holworthy.chess;
 
 import java.util.ArrayList;
 
+import holworthy.chess.piece.King;
 import holworthy.chess.piece.Piece;
 
 public class Chess {
@@ -30,6 +31,10 @@ public class Chess {
 
 		Square from = move.getFrom();
 		Square to = move.getTo();
+
+		if(!board.generateMoves(whosTurn).contains(move)) {
+			return;
+		}
 
 		capturedPieces.add(to.getPiece());
 		to.setPiece(from.getPiece());
@@ -67,8 +72,6 @@ public class Chess {
 		int toX = toFile - 'a';
 		int toY = 7 - (toRank - '1');
 
-		System.out.printf("%d %d %d %d\n", fromX, fromY, toX, toY);
-
 		makeMove(new Move(board.getSquare(fromX, fromY), board.getSquare(toX, toY)));
 	}
 
@@ -84,13 +87,52 @@ public class Chess {
 		return board;
 	}
 
+	private Square kingSquare(Piece.Colour colour) {
+		for(int y = 0; y < 8; y++) {
+			for(int x = 0; x < 8; x++) {
+				Square square = board.getSquare(x, y);
+				Piece piece = square.getPiece();
+				if(piece != null && piece.getColour() == colour && piece instanceof King)
+					return square;
+			}
+		}
+		return null;
+	}
+
+	public boolean isInCheck(Piece.Colour colour) {
+		ArrayList<Move> moves = board.generateMoves(colour.other());
+		Square kingSquare = kingSquare(colour);
+
+		for(Move move : moves)
+			if(move.getTo() == kingSquare)
+				return true;
+
+		return false;
+	}
+
+	public boolean isInCheckmate(Piece.Colour colour) {
+		if(!isInCheck(colour))
+			return false;
+
+		for(Move move : board.generateMoves(whosTurn)) {
+			makeMove(move);
+			if(!isInCheck(colour)) {
+				undoMove();
+				return false;
+			}
+			undoMove();
+		}
+
+		return true;
+	}
+
 	public static void main(String[] args) {
 		Chess chess = new Chess();
 
 		System.out.println(chess.getBoard());
 		chess.makeMove("a2a4");
 		System.out.println(chess.getBoard());
-		chess.makeMove("a7a5");
-		System.out.println(chess.getBoard());
+		// chess.makeMove("a7a5");
+		// System.out.println(chess.getBoard());
 	}
 }
