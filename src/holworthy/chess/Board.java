@@ -1,5 +1,7 @@
 package holworthy.chess;
 
+import java.util.ArrayList;
+
 import holworthy.chess.piece.Bishop;
 import holworthy.chess.piece.King;
 import holworthy.chess.piece.Knight;
@@ -54,6 +56,10 @@ public class Board {
 		}
 
 		return string;
+	}
+
+	public ArrayList<Move> generateMoves() {
+		return null;
 	}
 
 	public static void main(String[] args) {
