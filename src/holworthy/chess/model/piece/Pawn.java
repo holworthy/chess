@@ -69,8 +69,8 @@ public class Pawn extends Piece{
 		else{
 			// black forwards
 			Square to = getBoard().getSquare(from.getX(), from.getY() + 1);
-			if(to != null && to.getPiece() != null) {
-				if(to.getY() == 0) {
+			if(to != null && to.getPiece() == null) {
+				if(to.getY() == 7) {
 					moves.add(new PromotionMove(from, to, new Queen(getColour(), getBoard())));
 					moves.add(new PromotionMove(from, to, new Rook(getColour(), getBoard())));
 					moves.add(new PromotionMove(from, to, new Bishop(getColour(), getBoard())));
@@ -88,7 +88,7 @@ public class Pawn extends Piece{
 			// Black diagonal attack left
 			to = getBoard().getSquare(from.getX() - 1, from.getY() + 1);
 			if(to != null && to.getPiece() != null) {
-				if(to.getY() == 0) {
+				if(to.getY() == 7) {
 					moves.add(new PromotionMove(from, to, new Queen(getColour(), getBoard())));
 					moves.add(new PromotionMove(from, to, new Rook(getColour(), getBoard())));
 					moves.add(new PromotionMove(from, to, new Bishop(getColour(), getBoard())));
@@ -100,7 +100,7 @@ public class Pawn extends Piece{
 			// Black diagonal attack right
 			to = getBoard().getSquare(from.getX() + 1, from.getY() + 1);
 			if(to != null && to.getPiece() != null) {
-				if(to.getY() == 0) {
+				if(to.getY() == 7) {
 					moves.add(new PromotionMove(from, to, new Queen(getColour(), getBoard())));
 					moves.add(new PromotionMove(from, to, new Rook(getColour(), getBoard())));
 					moves.add(new PromotionMove(from, to, new Bishop(getColour(), getBoard())));
@@ -111,6 +111,7 @@ public class Pawn extends Piece{
 			}
 		}
 		getBoard().isEnPassantValid(from);
+		// TODO: actually generate these moves here
 		return moves;
 	}
 }

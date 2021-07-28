@@ -2,6 +2,7 @@ package holworthy.chess.model;
 
 import java.util.ArrayList;
 
+import holworthy.chess.model.move.AttackingMove;
 import holworthy.chess.model.move.CastlingMove;
 import holworthy.chess.model.move.CastlingMove.Side;
 import holworthy.chess.model.move.EnPassantMove;
@@ -156,40 +157,55 @@ public class Board {
 	}
 
 	public boolean makeMove(Move move) {
-		if(!generateMoves(whosTurn).contains(move) && !(move instanceof CastlingMove) && !(move instanceof EnPassantMove))
+		// TODO: remove second half once Pawn is fixed
+		if(!generateMoves(whosTurn).contains(move) && !(move instanceof EnPassantMove))
 			return false;
 
-		/*
-		
-		TODO: refactor like so
-		Move
-			CastlingMove
-			AttackingMove
-				EnPassantMove
-				StandardMove
-					PromotionMove
+		if(move instanceof AttackingMove) {
+			AttackingMove attackingMove = (AttackingMove) move;
 
-		*/
-		
-		if(move instanceof StandardMove) {
-			StandardMove standardMove = (StandardMove) move;
-
-			if(standardMove.getFrom().getPiece() == null || standardMove.getFrom().getPiece().getColour() != whosTurn)
+			if(attackingMove.getFrom().getPiece() == null || attackingMove.getFrom().getPiece().getColour() != whosTurn)
 				return false;
 
-			if(standardMove.getTo().getPiece() != null && standardMove.getTo().getPiece().getColour() == whosTurn)
-				return false;
+			if(move instanceof StandardMove) {
+				StandardMove standardMove = (StandardMove) move;
+				
+				if(standardMove.getTo().getPiece() != null && standardMove.getTo().getPiece().getColour() == whosTurn)
+					return false;
 
-			Square from = standardMove.getFrom();
-			Square to = standardMove.getTo();
+				Square from = standardMove.getFrom();
+				Square to = standardMove.getTo();
 
-			if(standardMove.getCapturedPiece() != null)
-				capturedPieces.add(standardMove.getCapturedPiece());
+				if(standardMove.getCapturedPiece() != null)
+					capturedPieces.add(standardMove.getCapturedPiece());
 
-			from.getPiece().setMoved(true);
+				from.getPiece().setMoved(true);
 
-			to.setPiece(from.getPiece());
-			from.setPiece(null);
+				to.setPiece(from.getPiece());
+				from.setPiece(null);
+
+				if(move instanceof PromotionMove) {
+					PromotionMove promotionMove = (PromotionMove) standardMove;
+					from.setPiece(promotionMove.getPromotionPiece());
+				}
+			} else if(move instanceof EnPassantMove) {
+				EnPassantMove enPassantMove = (EnPassantMove) move;
+
+				if (enPassantMove.getTo().getPiece() != null)
+					return false;
+
+				Square from = enPassantMove.getFrom();
+				isEnPassantValid(from);
+				
+				Square to = enPassantMove.getTo();
+				Square captured = enPassantMove.getCaptured();
+
+				capturedPieces.add(captured.getPiece());
+				captured.setPiece(null);
+
+				to.setPiece(from.getPiece());
+				from.setPiece(null);
+			}
 		} else if(move instanceof CastlingMove) {
 			CastlingMove castlingMove = (CastlingMove) move;
 
@@ -224,31 +240,6 @@ public class Board {
 					getSquare(7, 0).setPiece(null);
 				}
 			}
-		} else if(move instanceof EnPassantMove) {
-			EnPassantMove enPassantMove = (EnPassantMove) move;
-			if (enPassantMove.getFrom().getPiece() == null || enPassantMove.getFrom().getPiece().getColour() != whosTurn)
-				return false;
-			if (enPassantMove.getTo().getPiece() != null)
-				return false;
-			
-			
-			
-
-			Square from = enPassantMove.getFrom();
-			isEnPassantValid(from);
-			
-			Square to = enPassantMove.getTo();
-			Square captured = enPassantMove.getCaptured();
-
-			capturedPieces.add(captured.getPiece());
-			captured.setPiece(null);
-
-			to.setPiece(from.getPiece());
-			from.setPiece(null);
-		} else if(move instanceof PromotionMove) {
-			PromotionMove promotionMove = (PromotionMove) move;
-
-			// TODO: implement
 		}
 
 		moves.add(move);

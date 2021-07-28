@@ -25,7 +25,7 @@ public class Chess {
 		board.makeMove("d4d5");
 		board.makeMove("c7c5");
 		// board.makeMove("d5c6");
-		System.out.println(board.makeMove(new EnPassantMove(board.getSquare(3, 3).getPiece(), board.getSquare(2, 3).getPiece(), board.getSquare(3, 3), board.getSquare(2, 2), board.getSquare(2, 3))));
+		System.out.println(board.makeMove(new EnPassantMove(board.getSquare(3, 3), board.getSquare(2, 2), board.getSquare(3, 3).getPiece(), board.getSquare(2, 3).getPiece(), board.getSquare(2, 3))));
 		System.out.println(board);
 
 		// board.undoMove();

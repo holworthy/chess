@@ -4,26 +4,14 @@ import holworthy.chess.model.Square;
 import holworthy.chess.model.piece.Piece;
 
 public class EnPassantMove extends AttackingMove {
-	Square from;
-	Square to;
-	Square captured;
+	private Square captured;
 
-	public EnPassantMove(Piece pieceMoved, Piece capturedPiece, Square from, Square to, Square captured) {
-		super(pieceMoved, capturedPiece);
-		this.from = from;
-		this.to = to;
+	public EnPassantMove(Square from, Square to, Piece pieceMoved, Piece capturedPiece, Square captured) {
+		super(from, to, pieceMoved, capturedPiece);
 		this.captured = captured;
 	}
 
 	public Square getCaptured() {
 		return captured;
-	}
-
-	public Square getFrom() {
-		return from;
-	}
-
-	public Square getTo() {
-		return to;
 	}
 }
