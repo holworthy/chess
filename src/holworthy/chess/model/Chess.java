@@ -1,6 +1,7 @@
 package holworthy.chess.model;
 
 import holworthy.chess.model.move.CastlingMove;
+import holworthy.chess.model.move.EnPassantMove;
 import holworthy.chess.model.move.CastlingMove.Side;
 
 public class Chess {
@@ -19,24 +20,22 @@ public class Chess {
 		Board board = chess.getBoard();
 
 		System.out.println(board);
-		board.makeMove("a2a3");
-		board.makeMove("g8h6");
-		board.makeMove("b2b3");
-		board.makeMove("e7e6");
-		board.makeMove("c2c3");
-		board.makeMove("f8d6");
-		board.makeMove("d2d3");
-		board.makeMove(new CastlingMove(Side.KING));
+		board.makeMove("d2d4");
+		board.makeMove("h7h6");
+		board.makeMove("d4d5");
+		board.makeMove("c7c5");
+		// board.makeMove("d5c6");
+		System.out.println(board.makeMove(new EnPassantMove(board.getSquare(3, 3).getPiece(), board.getSquare(2, 3).getPiece(), board.getSquare(3, 3), board.getSquare(2, 2), board.getSquare(2, 3))));
 		System.out.println(board);
 
-		board.undoMove();
-		board.undoMove();
-		board.undoMove();
-		board.undoMove();
-		board.undoMove();
-		board.undoMove();
-		board.undoMove();
-		board.undoMove();
-		System.out.println(board);
+		// board.undoMove();
+		// board.undoMove();
+		// board.undoMove();
+		// board.undoMove();
+		// board.undoMove();
+		// board.undoMove();
+		// board.undoMove();
+		// board.undoMove();
+		// System.out.println(board);
 	}
 }

@@ -3,6 +3,7 @@ package holworthy.chess.model;
 import java.util.ArrayList;
 
 import holworthy.chess.model.move.CastlingMove;
+import holworthy.chess.model.move.EnPassantMove;
 import holworthy.chess.model.move.CastlingMove.Side;
 import holworthy.chess.model.move.Move;
 import holworthy.chess.model.move.StandardMove;
@@ -149,8 +150,12 @@ public class Board {
 		return false;
 	}
 
+	public ArrayList<Move> getMoves(){
+		return moves;
+	}
+
 	public boolean makeMove(Move move) {
-		if(!generateMoves(whosTurn).contains(move) && !(move instanceof CastlingMove))
+		if(!generateMoves(whosTurn).contains(move) && !(move instanceof CastlingMove) && !(move instanceof EnPassantMove))
 			return false;
 		
 		if(move instanceof StandardMove) {
@@ -206,6 +211,26 @@ public class Board {
 					getSquare(7, 0).setPiece(null);
 				}
 			}
+		} 
+		else if (move instanceof EnPassantMove){
+			EnPassantMove enPassantMove = (EnPassantMove) move;
+			if (enPassantMove.getFrom().getPiece() == null || enPassantMove.getFrom().getPiece().getColour() != whosTurn)
+				return false;
+			if (enPassantMove.getTo().getPiece() != null)
+				return false;
+			
+			// TODO: make a validation this side
+			
+
+			Square from = enPassantMove.getFrom();
+			Square to = enPassantMove.getTo();
+			Square captured = enPassantMove.getCaptured();
+
+			capturedPieces.add(captured.getPiece());
+			captured.setPiece(null);
+
+			to.setPiece(from.getPiece());
+			from.setPiece(null);
 		}
 
 		moves.add(move);

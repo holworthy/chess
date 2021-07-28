@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import holworthy.chess.model.Board;
 import holworthy.chess.model.Square;
+import holworthy.chess.model.move.EnPassantMove;
 import holworthy.chess.model.move.Move;
 import holworthy.chess.model.move.StandardMove;
 
@@ -39,6 +40,37 @@ public class Pawn extends Piece{
 			to = getBoard().getSquare(from.getX() + 1, from.getY() - 1);
 			if (to != null && to.getPiece() != null)
 				moves.add(new StandardMove(from, to));
+
+			// enpassant left
+			if (getBoard().getSquare(from.getX() - 1, from.getY()) != null){
+				if (getBoard().getSquare(from.getX() - 1, from.getY()).getPiece() instanceof Pawn && getBoard().getSquare(from.getX() - 1, from.getY()).getPiece().getColour() == Colour.BLACK){
+					if (getBoard().getMoves().get(getBoard().getMoves().size() - 1) instanceof StandardMove){
+						StandardMove move = (StandardMove) getBoard().getMoves().get(getBoard().getMoves().size() - 1);
+						if (move.getMovedPiece() == getBoard().getSquare(from.getX() - 1, from.getY()).getPiece()){
+							if (move.getTo().getY() - move.getFrom().getY() == 2){
+								moves.add(new EnPassantMove(this, getBoard().getSquare(from.getX() - 1, from.getY()).getPiece(), from, getBoard().getSquare(from.getX()-1,from.getY()-1), getBoard().getSquare(from.getX() - 1, from.getY())));
+							}
+						}
+					}
+				}
+			}
+			
+			// enpassant right
+			if (getBoard().getSquare(from.getX() + 1, from.getY()) != null){
+				if (getBoard().getSquare(from.getX() + 1, from.getY()).getPiece() instanceof Pawn && getBoard().getSquare(from.getX() + 1, from.getY()).getPiece().getColour() == Colour.BLACK){
+					if (getBoard().getMoves().get(getBoard().getMoves().size() - 1) instanceof StandardMove){
+						StandardMove move = (StandardMove) getBoard().getMoves().get(getBoard().getMoves().size() - 1);
+						if (move.getMovedPiece() == getBoard().getSquare(from.getX() + 1, from.getY()).getPiece()){
+							if (move.getTo().getY() - move.getFrom().getY() == 2){
+								moves.add(new EnPassantMove(this, getBoard().getSquare(from.getX() + 1, from.getY()).getPiece(), from, getBoard().getSquare(from.getX()+1,from.getY()-1), getBoard().getSquare(from.getX() + 1, from.getY())));
+							}
+						}
+					}
+				}
+			}
+			
+
+			
 		}
 		else{
 			// black forwards
