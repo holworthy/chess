@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import holworthy.chess.model.move.CastlingMove;
 import holworthy.chess.model.move.Move;
 import holworthy.chess.model.move.StandardMove;
+import holworthy.chess.model.move.CastlingMove.Side;
 import holworthy.chess.model.piece.King;
 import holworthy.chess.model.piece.Pawn;
 import holworthy.chess.model.piece.Piece;
+import holworthy.chess.model.piece.Piece.Colour;
 
 public class Chess {
 	private Board board;
@@ -15,37 +17,43 @@ public class Chess {
 	private ArrayList<Move> moves;
 	private ArrayList<Piece> capturedPieces;
 
+	private boolean[] haveKingsMoved = {false, false};
+	private boolean[] haveQueensideRooksMoved = {false, false};
+	private boolean[] haveKingsideRooksMoved = {false, false};
+
 	public Chess() {
 		board = new Board();
-		whosTurn = Piece.Colour.WHITE;
+		whosTurn = Colour.WHITE;
 		moves = new ArrayList<>();
 		capturedPieces = new ArrayList<>();
 	}
 
-	public void makeMove(Move move) {
-		if(!board.generateMoves(whosTurn).contains(move)) {
-			// TODO: fix this
-			return;
-		}
+	public boolean makeMove(Move move) {
+		if(!board.generateMoves(whosTurn).contains(move))
+			return false;
 		
+		int colourNumber = whosTurn.ordinal();
 		if(move instanceof StandardMove) {
 			StandardMove standardMove = (StandardMove) move;
 
-			if(standardMove.getFrom().getPiece() == null || standardMove.getFrom().getPiece().getColour() != whosTurn) {
-				// TODO: can only move own pieces
-				return;
-			}
+			if(standardMove.getFrom().getPiece() == null || standardMove.getFrom().getPiece().getColour() != whosTurn)
+				return false;
 
-			if(standardMove.getTo().getPiece() != null && standardMove.getTo().getPiece().getColour() == whosTurn) {
-				// TODO: cannot move onto own piece
-				return;
-			}
+			if(standardMove.getTo().getPiece() != null && standardMove.getTo().getPiece().getColour() == whosTurn)
+				return false;
 
 			Square from = standardMove.getFrom();
 			Square to = standardMove.getTo();
 
 			if(standardMove.getCapturedPiece() != null)
 				capturedPieces.add(standardMove.getCapturedPiece());
+			
+			if(from.getPiece() instanceof King && !haveKingsMoved[colourNumber])
+				haveKingsMoved[colourNumber] = true;
+			if(from.getX() == 0 && (from.getY() == 0 || from.getY() == 7) && !haveQueensideRooksMoved[colourNumber])
+				haveQueensideRooksMoved[colourNumber] = true;
+			if(from.getX() == 7 && (from.getY() == 0 || from.getY() == 7) && !haveKingsideRooksMoved[colourNumber])
+				haveKingsideRooksMoved[colourNumber] = true;
 
 			if(standardMove.getFrom().getPiece() instanceof Pawn){
 				Pawn pawn = (Pawn) standardMove.getFrom().getPiece();
@@ -55,19 +63,62 @@ public class Chess {
 			to.setPiece(from.getPiece());
 			from.setPiece(null);
 		} else if(move instanceof CastlingMove) {
-			// TODO: do castling
-			return;
+			CastlingMove castlingMove = (CastlingMove) move;
+
+			if(castlingMove.getSide() == Side.QUEEN && (haveKingsMoved[colourNumber] || haveQueensideRooksMoved[colourNumber]))
+				return false;
+			else if(castlingMove.getSide() == Side.KING && (haveKingsMoved[colourNumber] || haveKingsideRooksMoved[colourNumber]))
+				return false;
+
+			ArrayList<Square> inbetweenSquares = new ArrayList<>();
+			if(whosTurn == Colour.WHITE) {
+				if(castlingMove.getSide() == Side.QUEEN) {
+					inbetweenSquares.add(board.getSquare(1, 7));
+					inbetweenSquares.add(board.getSquare(2, 7));
+					inbetweenSquares.add(board.getSquare(3, 7));
+				} else {
+					inbetweenSquares.add(board.getSquare(5, 7));
+					inbetweenSquares.add(board.getSquare(6, 7));
+				}
+			} else {
+				if(castlingMove.getSide() == Side.QUEEN) {
+					inbetweenSquares.add(board.getSquare(1, 0));
+					inbetweenSquares.add(board.getSquare(2, 0));
+					inbetweenSquares.add(board.getSquare(3, 0));
+				} else {
+					inbetweenSquares.add(board.getSquare(5, 0));
+					inbetweenSquares.add(board.getSquare(6, 0));
+				}
+			}
+
+			for(Square inbetweenSquare : inbetweenSquares)
+				if(inbetweenSquare.getPiece() != null)
+					return false;
+			
+			if(isInCheck(whosTurn))
+				return false;
+
+			for(Square inbetweenSquare : inbetweenSquares) {
+				for(Move enemyMove : board.generateMoves(whosTurn.other())) {
+					if(move instanceof StandardMove) {
+						StandardMove standardMove = (StandardMove) enemyMove;
+						if(standardMove.getTo().equals(inbetweenSquare))
+							return false;
+					}
+				}
+			}
 		}
 
 		moves.add(move);
 
 		if(isInCheck(whosTurn)) {
 			undoMove();
-			// TODO: announce check issue
-			return;
+			return false;
 		}
 
 		whosTurn = whosTurn.other();
+
+		return true;
 	}
 
 	private boolean isValidRank(char rank) {
@@ -78,10 +129,9 @@ public class Chess {
 		return file >= 'a' && file <= 'h';
 	}
 
-	public void makeMove(String moveString) {
+	public boolean makeMove(String moveString) {
 		if(moveString.length() != 4) {
-			// TODO: invalid moveString
-			return;
+			return false;
 		}
 
 		char fromFile = moveString.charAt(0);
@@ -90,8 +140,7 @@ public class Chess {
 		char toRank = moveString.charAt(3);
 
 		if(!isValidFile(fromFile) || !isValidFile(toFile) || !isValidRank(fromRank) || !isValidRank(toRank)) {
-			// TODO: invalid moveString
-			return;
+			return false;
 		}
 
 		int fromX = fromFile - 'a';
@@ -102,7 +151,7 @@ public class Chess {
 		Square from = board.getSquare(fromX, fromY);
 		Square to = board.getSquare(toX, toY);
 
-		makeMove(new StandardMove(from, to, to.getPiece()));
+		return makeMove(new StandardMove(from, to, to.getPiece()));
 	}
 
 	public void undoMove() {
