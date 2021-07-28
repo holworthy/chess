@@ -34,7 +34,7 @@ public class Queen extends Piece{
 			moves.add(new StandardMove(from, to, to.getPiece()));
 			if(to.getPiece() != null)
 				break;
-			to = getBoard().getSquareAboveRight(from);
+			to = getBoard().getSquareAboveRight(to);
 		}
 
 		to = getBoard().getSquareRight(from);
@@ -50,7 +50,7 @@ public class Queen extends Piece{
 			moves.add(new StandardMove(from, to, to.getPiece()));
 			if(to.getPiece() != null)
 				break;
-			to = getBoard().getSquareBelowRight(from);
+			to = getBoard().getSquareBelowRight(to);
 		}
 
 		to = getBoard().getSquareBelow(from);
@@ -66,7 +66,7 @@ public class Queen extends Piece{
 			moves.add(new StandardMove(from, to, to.getPiece()));
 			if(to.getPiece() != null)
 				break;
-			to = getBoard().getSquareAboveLeft(from);
+			to = getBoard().getSquareAboveLeft(to);
 		}
 
 		to = getBoard().getSquareLeft(from);
@@ -82,7 +82,7 @@ public class Queen extends Piece{
 			moves.add(new StandardMove(from, to, to.getPiece()));
 			if(to.getPiece() != null)
 				break;
-			to = getBoard().getSquareBelowLeft(from);
+			to = getBoard().getSquareBelowLeft(to);
 		}
 
 		return moves;

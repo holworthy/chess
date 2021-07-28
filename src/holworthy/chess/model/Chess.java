@@ -29,7 +29,7 @@ public class Chess {
 	}
 
 	public boolean makeMove(Move move) {
-		if(!board.generateMoves(whosTurn).contains(move))
+		if(!board.generateMoves(whosTurn).contains(move) && !(move instanceof CastlingMove))
 			return false;
 		
 		int colourNumber = whosTurn.ordinal();
@@ -105,6 +105,34 @@ public class Chess {
 						if(standardMove.getTo().equals(inbetweenSquare))
 							return false;
 					}
+				}
+			}
+
+			if(whosTurn == Colour.WHITE) {
+				if(castlingMove.getSide() == Side.QUEEN) {
+					board.getSquare(2, 7).setPiece(board.getSquare(4, 7).getPiece());
+					board.getSquare(4, 7).setPiece(null);
+					board.getSquare(3, 7).setPiece(board.getSquare(0, 7).getPiece());
+					board.getSquare(0, 7).setPiece(null);
+
+				} else {
+					board.getSquare(6, 7).setPiece(board.getSquare(4, 7).getPiece());
+					board.getSquare(4, 7).setPiece(null);
+					board.getSquare(5, 7).setPiece(board.getSquare(7, 7).getPiece());
+					board.getSquare(7, 7).setPiece(null);
+				}
+			} else {
+				if(castlingMove.getSide() == Side.QUEEN) {
+					board.getSquare(2, 0).setPiece(board.getSquare(4, 0).getPiece());
+					board.getSquare(4, 0).setPiece(null);
+					board.getSquare(3, 0).setPiece(board.getSquare(0, 0).getPiece());
+					board.getSquare(0, 0).setPiece(null);
+
+				} else {
+					board.getSquare(6, 0).setPiece(board.getSquare(4, 0).getPiece());
+					board.getSquare(4, 0).setPiece(null);
+					board.getSquare(5, 0).setPiece(board.getSquare(7, 0).getPiece());
+					board.getSquare(7, 0).setPiece(null);
 				}
 			}
 		}
@@ -222,18 +250,21 @@ public class Chess {
 		Chess chess = new Chess();
 
 		System.out.println(chess.getBoard());
-		chess.makeMove("a2a4");
-		System.out.println(chess.getBoard());
-		chess.makeMove("a7a5");
-		System.out.println(chess.getBoard());
-		chess.makeMove("a4a5");
+		chess.makeMove("a2a3");
+		chess.makeMove("g8h6");
+		chess.makeMove("b2b3");
+		chess.makeMove("e7e6");
+		chess.makeMove("c2c3");
+		chess.makeMove("f8d6");
+		chess.makeMove("d2d3");
+		System.out.println(chess.makeMove(new CastlingMove(Side.KING)));
 		System.out.println(chess.getBoard());
 
-		chess.undoMove();
-		System.out.println(chess.getBoard());
-		chess.undoMove();
-		System.out.println(chess.getBoard());
-		chess.undoMove();
-		System.out.println(chess.getBoard());
+		// chess.undoMove();
+		// System.out.println(chess.getBoard());
+		// chess.undoMove();
+		// System.out.println(chess.getBoard());
+		// chess.undoMove();
+		// System.out.println(chess.getBoard());
 	}
 }
