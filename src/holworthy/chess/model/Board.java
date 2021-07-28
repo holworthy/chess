@@ -219,9 +219,6 @@ public class Board {
 			if (enPassantMove.getTo().getPiece() != null)
 				return false;
 			
-			
-			
-
 			Square from = enPassantMove.getFrom();
 			isEnPassantValid(from);
 			
@@ -444,6 +441,16 @@ public class Board {
 			Square rookSquare = getSquare(castlingMove.getSide() == Side.QUEEN ? 0 : 7, whosTurn == Colour.BLACK ? 0 : 7);
 			kingSquare.getPiece().setMoved(false);
 			rookSquare.getPiece().setMoved(false);
+		}
+		else if (lastMove instanceof EnPassantMove){
+			EnPassantMove enPassantMove = (EnPassantMove) lastMove;
+			Square from = enPassantMove.getFrom();
+			Square to = enPassantMove.getTo();
+			Square captured = enPassantMove.getCaptured();
+
+			from.setPiece(to.getPiece());
+			to.setPiece(null);
+			captured.setPiece(capturedPieces.remove(capturedPieces.size() - 1));
 		}
 
 		whosTurn = whosTurn.other();
