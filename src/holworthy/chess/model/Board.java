@@ -3,9 +3,10 @@ package holworthy.chess.model;
 import java.util.ArrayList;
 
 import holworthy.chess.model.move.CastlingMove;
-import holworthy.chess.model.move.EnPassantMove;
 import holworthy.chess.model.move.CastlingMove.Side;
+import holworthy.chess.model.move.EnPassantMove;
 import holworthy.chess.model.move.Move;
+import holworthy.chess.model.move.PromotionMove;
 import holworthy.chess.model.move.StandardMove;
 import holworthy.chess.model.piece.Bishop;
 import holworthy.chess.model.piece.King;
@@ -157,6 +158,18 @@ public class Board {
 	public boolean makeMove(Move move) {
 		if(!generateMoves(whosTurn).contains(move) && !(move instanceof CastlingMove) && !(move instanceof EnPassantMove))
 			return false;
+
+		/*
+		
+		TODO: refactor like so
+		Move
+			CastlingMove
+			AttackingMove
+				EnPassantMove
+				StandardMove
+					PromotionMove
+
+		*/
 		
 		if(move instanceof StandardMove) {
 			StandardMove standardMove = (StandardMove) move;
@@ -211,8 +224,7 @@ public class Board {
 					getSquare(7, 0).setPiece(null);
 				}
 			}
-		} 
-		else if (move instanceof EnPassantMove){
+		} else if(move instanceof EnPassantMove) {
 			EnPassantMove enPassantMove = (EnPassantMove) move;
 			if (enPassantMove.getFrom().getPiece() == null || enPassantMove.getFrom().getPiece().getColour() != whosTurn)
 				return false;
@@ -231,6 +243,10 @@ public class Board {
 
 			to.setPiece(from.getPiece());
 			from.setPiece(null);
+		} else if(move instanceof PromotionMove) {
+			PromotionMove promotionMove = (PromotionMove) move;
+
+			// TODO: implement
 		}
 
 		moves.add(move);
