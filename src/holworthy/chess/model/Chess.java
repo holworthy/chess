@@ -114,12 +114,13 @@ public class Chess {
 					board.getSquare(4, 7).setPiece(null);
 					board.getSquare(3, 7).setPiece(board.getSquare(0, 7).getPiece());
 					board.getSquare(0, 7).setPiece(null);
-
+					haveQueensideRooksMoved[colourNumber] = true;
 				} else {
 					board.getSquare(6, 7).setPiece(board.getSquare(4, 7).getPiece());
 					board.getSquare(4, 7).setPiece(null);
 					board.getSquare(5, 7).setPiece(board.getSquare(7, 7).getPiece());
 					board.getSquare(7, 7).setPiece(null);
+					haveKingsideRooksMoved[colourNumber] = true;
 				}
 			} else {
 				if(castlingMove.getSide() == Side.QUEEN) {
@@ -127,14 +128,17 @@ public class Chess {
 					board.getSquare(4, 0).setPiece(null);
 					board.getSquare(3, 0).setPiece(board.getSquare(0, 0).getPiece());
 					board.getSquare(0, 0).setPiece(null);
+					haveQueensideRooksMoved[colourNumber] = true;
 
 				} else {
 					board.getSquare(6, 0).setPiece(board.getSquare(4, 0).getPiece());
 					board.getSquare(4, 0).setPiece(null);
 					board.getSquare(5, 0).setPiece(board.getSquare(7, 0).getPiece());
 					board.getSquare(7, 0).setPiece(null);
+					haveKingsideRooksMoved[colourNumber] = true;
 				}
 			}
+			haveKingsMoved[colourNumber] = true;
 		}
 
 		moves.add(move);
@@ -190,13 +194,47 @@ public class Chess {
 			Square from = standardMove.getFrom();
 			Square to = standardMove.getTo();
 
-			// TODO: set pawn moved falg to false if undone
+			// TODO: set pawn moved flag to false if undone
 
 			from.setPiece(to.getPiece());
 			to.setPiece(standardMove.getCapturedPiece() == null ? null : capturedPieces.remove(capturedPieces.size() - 1));
 		} else if(lastMove instanceof CastlingMove) {
+			CastlingMove castlingMove = (CastlingMove) lastMove;
+			int colourNumber = whosTurn.other().ordinal();
+			if(whosTurn.other() == Colour.WHITE) {
+				if(castlingMove.getSide() == Side.QUEEN) {
+					board.getSquare(4, 7).setPiece(board.getSquare(2, 7).getPiece());
+					board.getSquare(2, 7).setPiece(null);
+					board.getSquare(0, 7).setPiece(board.getSquare(3, 7).getPiece());
+					board.getSquare(3, 7).setPiece(null);
+					haveQueensideRooksMoved[colourNumber] = false;
+				} else {
+					board.getSquare(4, 7).setPiece(board.getSquare(6, 7).getPiece());
+					board.getSquare(6, 7).setPiece(null);
+					board.getSquare(7, 7).setPiece(board.getSquare(5, 7).getPiece());
+					board.getSquare(5, 7).setPiece(null);
+					haveKingsideRooksMoved[colourNumber] = false;
+				}
+			} else {
+				if(castlingMove.getSide() == Side.QUEEN) {
+					board.getSquare(4, 0).setPiece(board.getSquare(2, 0).getPiece());
+					board.getSquare(2, 0).setPiece(null);
+					board.getSquare(0, 0).setPiece(board.getSquare(3, 0).getPiece());
+					board.getSquare(3, 0).setPiece(null);
+					haveQueensideRooksMoved[colourNumber] = false;
 
+				} else {
+					board.getSquare(4, 0).setPiece(board.getSquare(6, 0).getPiece());
+					board.getSquare(6, 0).setPiece(null);
+					board.getSquare(7, 0).setPiece(board.getSquare(5, 0).getPiece());
+					board.getSquare(5, 0).setPiece(null);
+					haveKingsideRooksMoved[colourNumber] = false;
+				}
+			}
+			haveKingsMoved[colourNumber] = false;
 		}
+
+		whosTurn = whosTurn.other();
 	}
 
 	public Board getBoard() {
@@ -257,14 +295,17 @@ public class Chess {
 		chess.makeMove("c2c3");
 		chess.makeMove("f8d6");
 		chess.makeMove("d2d3");
-		System.out.println(chess.makeMove(new CastlingMove(Side.KING)));
+		chess.makeMove(new CastlingMove(Side.KING));
 		System.out.println(chess.getBoard());
 
-		// chess.undoMove();
-		// System.out.println(chess.getBoard());
-		// chess.undoMove();
-		// System.out.println(chess.getBoard());
-		// chess.undoMove();
-		// System.out.println(chess.getBoard());
+		chess.undoMove();
+		chess.undoMove();
+		chess.undoMove();
+		chess.undoMove();
+		chess.undoMove();
+		chess.undoMove();
+		chess.undoMove();
+		chess.undoMove();
+		System.out.println(chess.getBoard());
 	}
 }
