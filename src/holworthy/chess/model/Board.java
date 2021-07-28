@@ -231,10 +231,12 @@ public class Board {
 			if (enPassantMove.getTo().getPiece() != null)
 				return false;
 			
-			// TODO: make a validation this side
+			
 			
 
 			Square from = enPassantMove.getFrom();
+			isEnPassantValid(from);
+			
 			Square to = enPassantMove.getTo();
 			Square captured = enPassantMove.getCaptured();
 
@@ -357,6 +359,62 @@ public class Board {
 		}
 
 		return true;
+	}
+
+	public boolean isEnPassantValid(Square from){
+		Square leftSquare = this.getSquare(from.getX() - 1, from.getY());
+		Square rightSquare = this.getSquare(from.getX() + 1, from.getY());
+		if (from.getPiece().getColour() == Colour.WHITE){
+			// enpassant left white
+			if (leftSquare != null){
+				if (leftSquare.getPiece() instanceof Pawn && leftSquare.getPiece().getColour() == Colour.BLACK){
+					if (this.getMoves().get(this.getMoves().size() - 1) instanceof StandardMove){
+						StandardMove move = (StandardMove) this.getMoves().get(this.getMoves().size() - 1);
+						if (move.getMovedPiece() == leftSquare.getPiece())
+							if (move.getTo().getY() - move.getFrom().getY() == 2)
+								return true;
+					}
+				}
+			}
+			
+			// enpassant right white
+			if (rightSquare != null){
+				if (rightSquare.getPiece() instanceof Pawn && rightSquare.getPiece().getColour() == Colour.BLACK){
+					if (this.getMoves().get(this.getMoves().size() - 1) instanceof StandardMove){
+						StandardMove move = (StandardMove) this.getMoves().get(this.getMoves().size() - 1);
+						if (move.getMovedPiece() == rightSquare.getPiece())
+							if (move.getTo().getY() - move.getFrom().getY() == 2)
+								return true;
+					}
+				}
+			}
+		}
+		else {
+			// enpassant left Black
+			if (leftSquare != null){
+				if (leftSquare.getPiece() instanceof Pawn && leftSquare.getPiece().getColour() == Colour.WHITE){
+					if (this.getMoves().get(this.getMoves().size() - 1) instanceof StandardMove){
+						StandardMove move = (StandardMove) this.getMoves().get(this.getMoves().size() - 1);
+						if (move.getMovedPiece() == leftSquare.getPiece())
+							if (move.getTo().getY() - move.getFrom().getY() == -2)
+								return true;
+					}
+				}
+			}
+			
+			// enpassant right Balck
+			if (rightSquare != null){
+				if (rightSquare.getPiece() instanceof Pawn && rightSquare.getPiece().getColour() == Colour.WHITE){
+					if (this.getMoves().get(this.getMoves().size() - 1) instanceof StandardMove){
+						StandardMove move = (StandardMove) this.getMoves().get(this.getMoves().size() - 1);
+						if (move.getMovedPiece() == rightSquare.getPiece())
+							if (move.getTo().getY() - move.getFrom().getY() == -2)
+								return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	public void undoMove() {
