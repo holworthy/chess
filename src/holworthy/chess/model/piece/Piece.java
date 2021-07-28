@@ -18,6 +18,7 @@ public abstract class Piece {
 
 	private Colour colour;
 	private Board board;
+	private boolean moved = false;
 
 	public Piece(Colour colour, Board board){
 		this.colour = colour;
@@ -30,6 +31,14 @@ public abstract class Piece {
 
 	public Board getBoard() {
 		return board;
+	}
+
+	public boolean getMoved() {
+		return moved;
+	}
+
+	public void setMoved(boolean moved) {
+		this.moved = moved;
 	}
 
 	public abstract char getCharacter();

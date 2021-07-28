@@ -23,7 +23,7 @@ public class Rook extends Piece{
 
 		Square to = getBoard().getSquareAbove(from);
 		while(to != null) {
-			moves.add(new StandardMove(from, to, to.getPiece()));
+			moves.add(new StandardMove(from, to));
 			if(to.getPiece() != null)
 				break;
 			to = getBoard().getSquareAbove(to);
@@ -31,7 +31,7 @@ public class Rook extends Piece{
 
 		to = getBoard().getSquareRight(from);
 		while(to != null) {
-			moves.add(new StandardMove(from, to, to.getPiece()));
+			moves.add(new StandardMove(from, to));
 			if(to.getPiece() != null)
 				break;
 			to = getBoard().getSquareRight(to);
@@ -39,7 +39,7 @@ public class Rook extends Piece{
 
 		to = getBoard().getSquareBelow(from);
 		while(to != null) {
-			moves.add(new StandardMove(from, to, to.getPiece()));
+			moves.add(new StandardMove(from, to));
 			if(to.getPiece() != null)
 				break;
 			to = getBoard().getSquareBelow(to);
@@ -47,7 +47,7 @@ public class Rook extends Piece{
 
 		to = getBoard().getSquareLeft(from);
 		while(to != null) {
-			moves.add(new StandardMove(from, to, to.getPiece()));
+			moves.add(new StandardMove(from, to));
 			if(to.getPiece() != null)
 				break;
 			to = getBoard().getSquareLeft(to);

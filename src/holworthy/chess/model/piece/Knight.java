@@ -26,28 +26,28 @@ public class Knight extends Piece{
 
 		Square to = getBoard().getSquare(fromX + 1, fromY - 2);
 		if(to != null)
-			moves.add(new StandardMove(from, to, to.getPiece()));
+			moves.add(new StandardMove(from, to));
 		to = getBoard().getSquare(fromX - 1, fromY - 2);
 		if(to != null)
-			moves.add(new StandardMove(from, to, to.getPiece()));
+			moves.add(new StandardMove(from, to));
 		to = getBoard().getSquare(fromX + 2, fromY - 1);
 		if(to != null)
-			moves.add(new StandardMove(from, to, to.getPiece()));
+			moves.add(new StandardMove(from, to));
 		to = getBoard().getSquare(fromX - 2, fromY - 1);
 		if(to != null)
-			moves.add(new StandardMove(from, to, to.getPiece()));
+			moves.add(new StandardMove(from, to));
 		to = getBoard().getSquare(fromX + 1, fromY + 2);
 		if(to != null)
-			moves.add(new StandardMove(from, to, to.getPiece()));
+			moves.add(new StandardMove(from, to));
 		to = getBoard().getSquare(fromX - 1, fromY + 2);
 		if(to != null)
-			moves.add(new StandardMove(from, to, to.getPiece()));
+			moves.add(new StandardMove(from, to));
 		to = getBoard().getSquare(fromX + 2, fromY + 1);
 		if(to != null)
-			moves.add(new StandardMove(from, to, to.getPiece()));
+			moves.add(new StandardMove(from, to));
 		to = getBoard().getSquare(fromX - 2, fromY + 1);
 		if(to != null)
-			moves.add(new StandardMove(from, to, to.getPiece()));
+			moves.add(new StandardMove(from, to));
 
 		return moves;
 	}

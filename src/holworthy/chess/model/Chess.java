@@ -3,23 +3,19 @@ package holworthy.chess.model;
 import java.util.ArrayList;
 
 import holworthy.chess.model.move.CastlingMove;
+import holworthy.chess.model.move.CastlingMove.Side;
 import holworthy.chess.model.move.Move;
 import holworthy.chess.model.move.StandardMove;
-import holworthy.chess.model.move.CastlingMove.Side;
 import holworthy.chess.model.piece.King;
-import holworthy.chess.model.piece.Pawn;
 import holworthy.chess.model.piece.Piece;
 import holworthy.chess.model.piece.Piece.Colour;
+import holworthy.chess.model.piece.Rook;
 
 public class Chess {
 	private Board board;
 	private Piece.Colour whosTurn;
 	private ArrayList<Move> moves;
 	private ArrayList<Piece> capturedPieces;
-
-	private boolean[] haveKingsMoved = {false, false};
-	private boolean[] haveQueensideRooksMoved = {false, false};
-	private boolean[] haveKingsideRooksMoved = {false, false};
 
 	public Chess() {
 		board = new Board();
@@ -32,7 +28,6 @@ public class Chess {
 		if(!board.generateMoves(whosTurn).contains(move) && !(move instanceof CastlingMove))
 			return false;
 		
-		int colourNumber = whosTurn.ordinal();
 		if(move instanceof StandardMove) {
 			StandardMove standardMove = (StandardMove) move;
 
@@ -47,27 +42,19 @@ public class Chess {
 
 			if(standardMove.getCapturedPiece() != null)
 				capturedPieces.add(standardMove.getCapturedPiece());
-			
-			if(from.getPiece() instanceof King && !haveKingsMoved[colourNumber])
-				haveKingsMoved[colourNumber] = true;
-			if(from.getX() == 0 && (from.getY() == 0 || from.getY() == 7) && !haveQueensideRooksMoved[colourNumber])
-				haveQueensideRooksMoved[colourNumber] = true;
-			if(from.getX() == 7 && (from.getY() == 0 || from.getY() == 7) && !haveKingsideRooksMoved[colourNumber])
-				haveKingsideRooksMoved[colourNumber] = true;
 
-			if(standardMove.getFrom().getPiece() instanceof Pawn){
-				Pawn pawn = (Pawn) standardMove.getFrom().getPiece();
-				pawn.setMoved(true);
-			}
+			from.getPiece().setMoved(true);
 
 			to.setPiece(from.getPiece());
 			from.setPiece(null);
 		} else if(move instanceof CastlingMove) {
 			CastlingMove castlingMove = (CastlingMove) move;
 
-			if(castlingMove.getSide() == Side.QUEEN && (haveKingsMoved[colourNumber] || haveQueensideRooksMoved[colourNumber]))
+			Square kingSquare = board.getSquare(4, whosTurn == Colour.BLACK ? 0 : 7);
+			Square rookSquare = board.getSquare(castlingMove.getSide() == Side.QUEEN ? 0 : 7, whosTurn == Colour.BLACK ? 0 : 7);
+			if(kingSquare.getPiece() == null || !(kingSquare.getPiece() instanceof King) || kingSquare.getPiece().getColour() != whosTurn || kingSquare.getPiece().getMoved())
 				return false;
-			else if(castlingMove.getSide() == Side.KING && (haveKingsMoved[colourNumber] || haveKingsideRooksMoved[colourNumber]))
+			if(rookSquare.getPiece() == null || !(rookSquare.getPiece() instanceof Rook) || rookSquare.getPiece().getColour() != whosTurn || rookSquare.getPiece().getMoved())
 				return false;
 
 			ArrayList<Square> inbetweenSquares = new ArrayList<>();
@@ -108,19 +95,19 @@ public class Chess {
 				}
 			}
 
+			rookSquare.getPiece().setMoved(true);
+			kingSquare.getPiece().setMoved(true);
 			if(whosTurn == Colour.WHITE) {
 				if(castlingMove.getSide() == Side.QUEEN) {
 					board.getSquare(2, 7).setPiece(board.getSquare(4, 7).getPiece());
 					board.getSquare(4, 7).setPiece(null);
 					board.getSquare(3, 7).setPiece(board.getSquare(0, 7).getPiece());
 					board.getSquare(0, 7).setPiece(null);
-					haveQueensideRooksMoved[colourNumber] = true;
 				} else {
 					board.getSquare(6, 7).setPiece(board.getSquare(4, 7).getPiece());
 					board.getSquare(4, 7).setPiece(null);
 					board.getSquare(5, 7).setPiece(board.getSquare(7, 7).getPiece());
 					board.getSquare(7, 7).setPiece(null);
-					haveKingsideRooksMoved[colourNumber] = true;
 				}
 			} else {
 				if(castlingMove.getSide() == Side.QUEEN) {
@@ -128,17 +115,14 @@ public class Chess {
 					board.getSquare(4, 0).setPiece(null);
 					board.getSquare(3, 0).setPiece(board.getSquare(0, 0).getPiece());
 					board.getSquare(0, 0).setPiece(null);
-					haveQueensideRooksMoved[colourNumber] = true;
 
 				} else {
 					board.getSquare(6, 0).setPiece(board.getSquare(4, 0).getPiece());
 					board.getSquare(4, 0).setPiece(null);
 					board.getSquare(5, 0).setPiece(board.getSquare(7, 0).getPiece());
 					board.getSquare(7, 0).setPiece(null);
-					haveKingsideRooksMoved[colourNumber] = true;
 				}
 			}
-			haveKingsMoved[colourNumber] = true;
 		}
 
 		moves.add(move);
@@ -183,7 +167,7 @@ public class Chess {
 		Square from = board.getSquare(fromX, fromY);
 		Square to = board.getSquare(toX, toY);
 
-		return makeMove(new StandardMove(from, to, to.getPiece()));
+		return makeMove(new StandardMove(from, to));
 	}
 
 	public void undoMove() {
@@ -200,20 +184,17 @@ public class Chess {
 			to.setPiece(standardMove.getCapturedPiece() == null ? null : capturedPieces.remove(capturedPieces.size() - 1));
 		} else if(lastMove instanceof CastlingMove) {
 			CastlingMove castlingMove = (CastlingMove) lastMove;
-			int colourNumber = whosTurn.other().ordinal();
 			if(whosTurn.other() == Colour.WHITE) {
 				if(castlingMove.getSide() == Side.QUEEN) {
 					board.getSquare(4, 7).setPiece(board.getSquare(2, 7).getPiece());
 					board.getSquare(2, 7).setPiece(null);
 					board.getSquare(0, 7).setPiece(board.getSquare(3, 7).getPiece());
 					board.getSquare(3, 7).setPiece(null);
-					haveQueensideRooksMoved[colourNumber] = false;
 				} else {
 					board.getSquare(4, 7).setPiece(board.getSquare(6, 7).getPiece());
 					board.getSquare(6, 7).setPiece(null);
 					board.getSquare(7, 7).setPiece(board.getSquare(5, 7).getPiece());
 					board.getSquare(5, 7).setPiece(null);
-					haveKingsideRooksMoved[colourNumber] = false;
 				}
 			} else {
 				if(castlingMove.getSide() == Side.QUEEN) {
@@ -221,17 +202,17 @@ public class Chess {
 					board.getSquare(2, 0).setPiece(null);
 					board.getSquare(0, 0).setPiece(board.getSquare(3, 0).getPiece());
 					board.getSquare(3, 0).setPiece(null);
-					haveQueensideRooksMoved[colourNumber] = false;
-
 				} else {
 					board.getSquare(4, 0).setPiece(board.getSquare(6, 0).getPiece());
 					board.getSquare(6, 0).setPiece(null);
 					board.getSquare(7, 0).setPiece(board.getSquare(5, 0).getPiece());
 					board.getSquare(5, 0).setPiece(null);
-					haveKingsideRooksMoved[colourNumber] = false;
 				}
 			}
-			haveKingsMoved[colourNumber] = false;
+			Square kingSquare = board.getSquare(5, whosTurn == Colour.BLACK ? 0 : 7);
+			Square rookSquare = board.getSquare(castlingMove.getSide() == Side.QUEEN ? 0 : 7, whosTurn == Colour.BLACK ? 0 : 7);
+			kingSquare.getPiece().setMoved(false);
+			rookSquare.getPiece().setMoved(false);
 		}
 
 		whosTurn = whosTurn.other();
