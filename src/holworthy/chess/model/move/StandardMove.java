@@ -1,12 +1,14 @@
 package holworthy.chess.model.move;
 
 import holworthy.chess.model.Square;
+import holworthy.chess.model.piece.Piece;
 
-public class StandardMove extends Move {
+public class StandardMove extends AttackingMove {
 	private Square from;
 	private Square to;
 
-	public StandardMove(Square from, Square to){
+	public StandardMove(Square from, Square to, Piece capturedPiece){
+		super(capturedPiece);
 		this.from = from;
 		this.to = to;
 	}

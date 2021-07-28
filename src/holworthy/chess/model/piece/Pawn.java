@@ -25,21 +25,21 @@ public class Pawn extends Piece{
 		if (this.getColour() == Colour.WHITE){
 			Square to = getBoard().getSquare(from.getX(), from.getY() - 1);
 			if (to != null)
-				moves.add(new StandardMove(from, to));
+				moves.add(new StandardMove(from, to, to.getPiece()));
 			if (!moved && to.getPiece() == null){
 				to = getBoard().getSquare(from.getX(), from.getY() - 2);
 				if (to != null)
-					moves.add(new StandardMove(from, to));
+					moves.add(new StandardMove(from, to, to.getPiece()));
 			}
 		}
 		else{
 			Square to = getBoard().getSquare(from.getX(), from.getY() + 1);
 			if (to != null)
-				moves.add(new StandardMove(from, to));
+				moves.add(new StandardMove(from, to, to.getPiece()));
 			if (!moved && to.getPiece() == null){
 				to = getBoard().getSquare(from.getX(), from.getY() + 2);
 				if (to != null)
-					moves.add(new StandardMove(from, to));
+					moves.add(new StandardMove(from, to, to.getPiece()));
 			}
 		}
 		return moves;

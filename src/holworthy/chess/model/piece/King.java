@@ -29,7 +29,7 @@ public class King extends Piece {
 				if(dx != 0 || dy != 0) {
 					Square to = getBoard().getSquare(fromX + dx, fromY + dy);
 					if(to != null)
-						moves.add(new StandardMove(from, to));
+						moves.add(new StandardMove(from, to, to.getPiece()));
 				}
 			}
 		}

@@ -23,11 +23,13 @@ public class Chess {
 
 	public void makeMove(Move move) {
 		if(!board.generateMoves(whosTurn).contains(move)) {
+			// TODO: fix this
 			return;
 		}
 		
 		if(move instanceof StandardMove) {
 			StandardMove standardMove = (StandardMove) move;
+
 			if(standardMove.getFrom().getPiece() == null || standardMove.getFrom().getPiece().getColour() != whosTurn) {
 				// TODO: can only move own pieces
 				return;
@@ -41,13 +43,17 @@ public class Chess {
 			Square from = standardMove.getFrom();
 			Square to = standardMove.getTo();
 
-			capturedPieces.add(to.getPiece());
+			if(standardMove.getCapturedPiece() != null)
+				capturedPieces.add(standardMove.getCapturedPiece());
+
 			to.setPiece(from.getPiece());
 			from.setPiece(null);
 		} else if(move instanceof CastlingMove) {
 			// TODO: do castling
 			return;
 		}
+
+		moves.add(move);
 
 		if(isInCheck(whosTurn)) {
 			undoMove();
@@ -87,7 +93,10 @@ public class Chess {
 		int toX = toFile - 'a';
 		int toY = 7 - (toRank - '1');
 
-		makeMove(new StandardMove(board.getSquare(fromX, fromY), board.getSquare(toX, toY)));
+		Square from = board.getSquare(fromX, fromY);
+		Square to = board.getSquare(toX, toY);
+
+		makeMove(new StandardMove(from, to, to.getPiece()));
 	}
 
 	public void undoMove() {
@@ -97,8 +106,9 @@ public class Chess {
 			StandardMove standardMove = (StandardMove) lastMove;
 			Square from = standardMove.getFrom();
 			Square to = standardMove.getTo();
+
 			from.setPiece(to.getPiece());
-			to.setPiece(capturedPieces.remove(capturedPieces.size() - 1));
+			to.setPiece(standardMove.getCapturedPiece() == null ? null : capturedPieces.remove(capturedPieces.size() - 1));
 		} else if(lastMove instanceof CastlingMove) {
 
 		}
@@ -157,7 +167,16 @@ public class Chess {
 		System.out.println(chess.getBoard());
 		chess.makeMove("a2a4");
 		System.out.println(chess.getBoard());
-		// chess.makeMove("a7a5");
-		// System.out.println(chess.getBoard());
+		chess.makeMove("a7a5");
+		System.out.println(chess.getBoard());
+		chess.makeMove("a4a5");
+		System.out.println(chess.getBoard());
+
+		chess.undoMove();
+		System.out.println(chess.getBoard());
+		chess.undoMove();
+		System.out.println(chess.getBoard());
+		chess.undoMove();
+		System.out.println(chess.getBoard());
 	}
 }

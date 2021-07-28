@@ -25,7 +25,7 @@ public class Bishop extends Piece{
 				Square to = getBoard().getSquare(from.getX() + xChange, from.getY() + yChange);
 				int multiple = 2;
 				while (to != null){
-					moves.add(new StandardMove(from, to));
+					moves.add(new StandardMove(from, to, to.getPiece()));
 					if (to.getPiece() == null)
 						to = getBoard().getSquare(from.getX() + (xChange*multiple), from.getY() + (yChange*multiple));
 					else
