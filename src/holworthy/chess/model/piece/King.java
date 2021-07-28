@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import holworthy.chess.model.Board;
 import holworthy.chess.model.Square;
+import holworthy.chess.model.move.CastlingMove;
+import holworthy.chess.model.move.CastlingMove.Side;
 import holworthy.chess.model.move.Move;
 import holworthy.chess.model.move.StandardMove;
 
@@ -34,6 +36,10 @@ public class King extends Piece {
 			}
 		}
 
+		for(Side side : Side.values())
+			if(getBoard().isCastlingValid(getColour(), side))
+				moves.add(new CastlingMove(side));
+			
 		return moves;
 	}
 }
