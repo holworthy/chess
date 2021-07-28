@@ -33,7 +33,7 @@ public class Pawn extends Piece{
 		if (this.getColour() == Colour.WHITE){
 			// white forwards
 			Square to = getBoard().getSquare(from.getX(), from.getY() - 1);
-			if (to != null)
+			if (to != null && to.getPiece() == null)
 				moves.add(new StandardMove(from, to, to.getPiece()));
 			// white forwards two spaces as frist move
 			if (!moved && to.getPiece() == null){
@@ -53,7 +53,7 @@ public class Pawn extends Piece{
 		else{
 			// black forwards
 			Square to = getBoard().getSquare(from.getX(), from.getY() + 1);
-			if (to != null)
+			if (to != null && to.getPiece() == null)
 				moves.add(new StandardMove(from, to, to.getPiece()));
 			// Black forwards two spaces as first move
 			if (!moved && to.getPiece() == null){
