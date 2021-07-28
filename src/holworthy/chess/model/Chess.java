@@ -6,6 +6,7 @@ import holworthy.chess.model.move.CastlingMove;
 import holworthy.chess.model.move.Move;
 import holworthy.chess.model.move.StandardMove;
 import holworthy.chess.model.piece.King;
+import holworthy.chess.model.piece.Pawn;
 import holworthy.chess.model.piece.Piece;
 
 public class Chess {
@@ -45,6 +46,11 @@ public class Chess {
 
 			if(standardMove.getCapturedPiece() != null)
 				capturedPieces.add(standardMove.getCapturedPiece());
+
+			if(standardMove.getFrom().getPiece() instanceof Pawn){
+				Pawn pawn = (Pawn) standardMove.getFrom().getPiece();
+				pawn.setMoved(true);
+			}
 
 			to.setPiece(from.getPiece());
 			from.setPiece(null);
@@ -106,6 +112,8 @@ public class Chess {
 			StandardMove standardMove = (StandardMove) lastMove;
 			Square from = standardMove.getFrom();
 			Square to = standardMove.getTo();
+
+			// TODO: set pawn moved falg to false if undone
 
 			from.setPiece(to.getPiece());
 			to.setPiece(standardMove.getCapturedPiece() == null ? null : capturedPieces.remove(capturedPieces.size() - 1));
