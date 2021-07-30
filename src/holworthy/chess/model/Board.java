@@ -159,7 +159,6 @@ public class Board {
 	}
 
 	public boolean makeMove(Move move) {
-		// TODO: remove second half once Pawn is fixed
 		if(!generateMoves(whosTurn).contains(move))
 			return false;
 
@@ -181,11 +180,11 @@ public class Board {
 			} else if(move instanceof EnPassantMove) {
 				EnPassantMove enPassantMove = (EnPassantMove) move;
 
-				if (enPassantMove.getTo().getPiece() != null)
+				if(enPassantMove.getTo().getPiece() != null)
 					return false;
 
-				isEnPassantValid(from);
-				// TODO: do something with this i guess
+				if(!isEnPassantValid(from))
+					return false;
 				
 				Square captured = enPassantMove.getCaptured();
 
