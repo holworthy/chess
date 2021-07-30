@@ -66,13 +66,13 @@ public class Client implements Runnable{
 			e.printStackTrace();
 		}
 		try {
-			dIS = (DataInputStream) socket.getInputStream();
+			dIS = new DataInputStream(socket.getInputStream());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
-			dOS = (DataOutputStream) socket.getOutputStream();
+			dOS = new DataOutputStream(socket.getOutputStream());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,6 +80,7 @@ public class Client implements Runnable{
 		try {
 			int colourValue = dIS.readInt();
 			colour = Colour.values()[colourValue];
+			System.out.println("i am " + colour);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
