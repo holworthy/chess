@@ -127,7 +127,7 @@ public class Board {
 		return getSquare(square.getX() - 1, square.getY() + 1);
 	}
 
-	private Square kingSquare(Piece.Colour colour) {
+	private Square kingSquare(Colour colour) {
 		for(int y = 0; y < 8; y++) {
 			for(int x = 0; x < 8; x++) {
 				Square square = getSquare(x, y);
@@ -139,7 +139,7 @@ public class Board {
 		return null;
 	}
 
-	public boolean isInCheck(Piece.Colour colour) {
+	public boolean isInCheck(Colour colour) {
 		ArrayList<Move> moves = generateMoves(colour.other());
 		Square kingSquare = kingSquare(colour);
 
@@ -239,13 +239,12 @@ public class Board {
 		}
 
 		moves.add(move);
+		whosTurn = whosTurn.other();
 
-		if(isInCheck(whosTurn)) {
+		if(isInCheck(whosTurn.other())) {
 			undoMove();
 			return false;
 		}
-
-		whosTurn = whosTurn.other();
 
 		return true;
 	}
@@ -300,12 +299,13 @@ public class Board {
 			return false;
 
 		for(Move move : generateMoves(colour.other())) {
-			makeMove(move);
-			if(!isInCheck(colour)) {
+			if(makeMove(move)) {
+				if(!isInCheck(colour)) {
+					undoMove();
+					return false;
+				}
 				undoMove();
-				return false;
 			}
-			undoMove();
 		}
 
 		return true;
@@ -469,6 +469,8 @@ public class Board {
 			from.setPiece(to.getPiece());
 			to.setPiece(null);
 			captured.setPiece(capturedPieces.remove(capturedPieces.size() - 1));
+		} else {
+			System.out.println("woops");
 		}
 
 		whosTurn = whosTurn.other();

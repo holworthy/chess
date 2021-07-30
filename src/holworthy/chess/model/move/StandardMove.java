@@ -46,7 +46,7 @@ public class StandardMove extends Move {
 
 	@Override
 	public String toString() {
-		return "StandardMove(" + getFrom() + ", " + getTo() + ")";
+		return "StandardMove(" + (getMovedPiece() == null ? ' ' : getMovedPiece().getCharacter()) + ", " + getFrom() + ", " + (getCapturedPiece() == null ? ' ' : getCapturedPiece().getCharacter()) + ", " + getTo() + ")";
 	}
 
 	@Override

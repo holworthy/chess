@@ -37,7 +37,7 @@ public class Pawn extends Piece{
 			}
 				
 			// white forwards two spaces as first move
-			if (!getMoved() && to.getPiece() == null){
+			if (from.getY() == 1 && to.getPiece() == null){
 				to = getBoard().getSquare(from.getX(), from.getY() - 2);
 				if (to != null)
 					moves.add(new StandardMove(from, to));
@@ -92,7 +92,7 @@ public class Pawn extends Piece{
 				}
 			}
 			// Black forwards two spaces as first move
-			if (!getMoved() && to.getPiece() == null){
+			if (from.getY() == 6 && to.getPiece() == null){
 				to = getBoard().getSquare(from.getX(), from.getY() + 2);
 				if (to != null)
 					moves.add(new StandardMove(from, to));
