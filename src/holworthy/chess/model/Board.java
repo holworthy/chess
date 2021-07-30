@@ -2,7 +2,7 @@ package holworthy.chess.model;
 
 import java.util.ArrayList;
 
-import holworthy.chess.model.move.AttackingMove;
+import holworthy.chess.model.move.StandardMove;
 import holworthy.chess.model.move.CastlingMove;
 import holworthy.chess.model.move.CastlingMove.Side;
 import holworthy.chess.model.move.EnPassantMove;
@@ -161,48 +161,42 @@ public class Board {
 		if(!generateMoves(whosTurn).contains(move) && !(move instanceof EnPassantMove))
 			return false;
 
-		if(move instanceof AttackingMove) {
-			AttackingMove attackingMove = (AttackingMove) move;
+		if(move instanceof StandardMove) {
+			StandardMove standardMove = (StandardMove) move;
 
-			if(attackingMove.getFrom().getPiece() == null || attackingMove.getFrom().getPiece().getColour() != whosTurn)
+			if(standardMove.getFrom().getPiece() == null || standardMove.getFrom().getPiece().getColour() != whosTurn)
 				return false;
 
-			if(move instanceof StandardMove) {
-				StandardMove standardMove = (StandardMove) move;
-				
-				if(standardMove.getTo().getPiece() != null && standardMove.getTo().getPiece().getColour() == whosTurn)
-					return false;
+			if(standardMove.getTo().getPiece() != null && standardMove.getTo().getPiece().getColour() == whosTurn)
+				return false;
 
-				Square from = standardMove.getFrom();
-				Square to = standardMove.getTo();
+			Square from = standardMove.getFrom();
+			Square to = standardMove.getTo();
 
-				if(standardMove.getCapturedPiece() != null)
-					capturedPieces.add(standardMove.getCapturedPiece());
-
-				from.getPiece().setMoved(true);
-
-				to.setPiece(from.getPiece());
-				from.setPiece(null);
-
-				if(move instanceof PromotionMove) {
-					PromotionMove promotionMove = (PromotionMove) standardMove;
-					from.setPiece(promotionMove.getPromotionPiece());
-				}
+			if(move instanceof PromotionMove) {
+				PromotionMove promotionMove = (PromotionMove) standardMove;
+				from.setPiece(promotionMove.getPromotionPiece());
 			} else if(move instanceof EnPassantMove) {
 				EnPassantMove enPassantMove = (EnPassantMove) move;
 
 				if (enPassantMove.getTo().getPiece() != null)
 					return false;
 
-				Square from = enPassantMove.getFrom();
 				isEnPassantValid(from);
 				// TODO: do something with this i guess
 				
-				Square to = enPassantMove.getTo();
 				Square captured = enPassantMove.getCaptured();
 
 				capturedPieces.add(captured.getPiece());
 				captured.setPiece(null);
+
+				to.setPiece(from.getPiece());
+				from.setPiece(null);
+			} else {
+				if(standardMove.getCapturedPiece() != null)
+					capturedPieces.add(standardMove.getCapturedPiece());
+
+				from.getPiece().setMoved(true);
 
 				to.setPiece(from.getPiece());
 				from.setPiece(null);
