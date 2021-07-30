@@ -158,7 +158,7 @@ public class Board {
 
 	public boolean makeMove(Move move) {
 		// TODO: remove second half once Pawn is fixed
-		if(!generateMoves(whosTurn).contains(move) && !(move instanceof EnPassantMove))
+		if(!generateMoves(whosTurn).contains(move))
 			return false;
 
 		if(move instanceof AttackingMove) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import holworthy.chess.model.Board;
 import holworthy.chess.model.Square;
+import holworthy.chess.model.move.EnPassantMove;
 import holworthy.chess.model.move.Move;
 import holworthy.chess.model.move.PromotionMove;
 import holworthy.chess.model.move.StandardMove;
@@ -65,6 +66,17 @@ public class Pawn extends Piece{
 					moves.add(new StandardMove(from, to));
 				}
 			}
+			// white en passant right
+			if (getBoard().isEnPassantValid(from)){
+				Square rightSquare = getBoard().getSquare(from.getX() + 1, from.getY());
+				if (rightSquare.getPiece() != null){
+					moves.add(new EnPassantMove(from, getBoard().getSquare(from.getX() + 1, from.getY() - 1), this, rightSquare.getPiece(), rightSquare));
+				}
+				Square leftSquare = getBoard().getSquare(from.getX() - 1, from.getY());
+				if (leftSquare.getPiece() != null){
+					moves.add(new EnPassantMove(from, getBoard().getSquare(from.getX() - 1, from.getY() - 1), this, leftSquare.getPiece(), leftSquare));
+				}
+			}
 		}
 		else{
 			// black forwards
@@ -109,9 +121,18 @@ public class Pawn extends Piece{
 					moves.add(new StandardMove(from, to));
 				}
 			}
+			// Black En Passant
+			if (getBoard().isEnPassantValid(from)){
+				Square rightSquare = getBoard().getSquare(from.getX() + 1, from.getY());
+				if (rightSquare.getPiece() != null){
+					moves.add(new EnPassantMove(from, getBoard().getSquare(from.getX() + 1, from.getY() + 1), this, rightSquare.getPiece(), rightSquare));
+				}
+				Square leftSquare = getBoard().getSquare(from.getX() - 1, from.getY());
+				if (leftSquare.getPiece() != null){
+					moves.add(new EnPassantMove(from, getBoard().getSquare(from.getX() - 1, from.getY() + 1), this, leftSquare.getPiece(), leftSquare));
+				}
+			}
 		}
-		getBoard().isEnPassantValid(from);
-		// TODO: actually generate these moves here
 		return moves;
 	}
 }
