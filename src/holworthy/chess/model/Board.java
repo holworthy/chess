@@ -2,7 +2,6 @@ package holworthy.chess.model;
 
 import java.util.ArrayList;
 
-import holworthy.chess.model.move.StandardMove;
 import holworthy.chess.model.move.CastlingMove;
 import holworthy.chess.model.move.CastlingMove.Side;
 import holworthy.chess.model.move.EnPassantMove;
