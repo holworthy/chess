@@ -1,8 +1,6 @@
 package holworthy.chess.model;
 
-import holworthy.chess.model.move.CastlingMove;
 import holworthy.chess.model.move.EnPassantMove;
-import holworthy.chess.model.move.CastlingMove.Side;
 
 public class Chess {
 	private Board board;
