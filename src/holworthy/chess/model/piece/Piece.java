@@ -43,4 +43,5 @@ public abstract class Piece {
 
 	public abstract char getCharacter();
 	public abstract ArrayList<Move> generateMoves(Square from);
+	public abstract int getType();
 }

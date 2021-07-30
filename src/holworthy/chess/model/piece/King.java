@@ -42,4 +42,9 @@ public class King extends Piece {
 			
 		return moves;
 	}
+
+	@Override
+	public int getType() {
+		return 5;
+	}
 }

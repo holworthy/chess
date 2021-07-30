@@ -19,4 +19,9 @@ public class EnPassantMove extends StandardMove {
 	public String toString() {
 		return "EnPassantMove(" + getFrom() + ", " + getTo() + ")";
 	}
+
+	@Override
+	public int getType() {
+		return 3;
+	}
 }

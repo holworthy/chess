@@ -8,8 +8,10 @@ import java.net.Socket;
 
 import holworthy.chess.model.Board;
 import holworthy.chess.model.piece.Piece.Colour;
+import holworthy.chess.networking.listener.ClientHandlerListener;
 import holworthy.chess.networking.listener.OnStartErrorListener;
 import holworthy.chess.networking.listener.OnStartListener;
+import holworthy.chess.networking.listener.ServerListener;
 
 public class Server implements Runnable {
 	// send name?
@@ -25,8 +27,11 @@ public class Server implements Runnable {
 	// onGameEnd
 
 	private int port;
-	private OnStartListener onStartListener;
-	private OnStartErrorListener onStartErrorListener;
+	private ServerListener serverListener;
+	private ClientHandler whiteClientHandler;
+	private ClientHandler blackClientHandler;
+	private boolean sentWhiteName = false;
+	private boolean sentBlackName = false;
 	
 	public void setPort(int port) {
 		this.port = port;
@@ -36,12 +41,8 @@ public class Server implements Runnable {
 		return port;
 	}
 
-	public void setOnStartListener(OnStartListener onStartListener) {
-		this.onStartListener = onStartListener;
-	}
-
-	public void setOnStartErrorListener(OnStartErrorListener onStartErrorListener) {
-		this.onStartErrorListener = onStartErrorListener;
+	public void setServerListener(ServerListener serverListener) {
+		this.serverListener = serverListener;
 	}
 
 	public void start() {
@@ -54,16 +55,31 @@ public class Server implements Runnable {
 		private Colour colour;
 		private DataInputStream dataInputStream;
 		private DataOutputStream dataOutputStream;
+		private ClientHandlerListener clientHandlerListener;
 
 		public ClientHandler(Socket socket, Colour colour) {
 			this.socket = socket;
 			this.colour = colour;
+		}
+
+		public void setClientHandlerListener(ClientHandlerListener clientHandlerListener) {
+			this.clientHandlerListener = clientHandlerListener;
+		}
+
+		public void start() {
 			Thread thread = new Thread(this);
 			thread.start();
 		}
 
 		private void sendColour() throws IOException {
 			dataOutputStream.writeInt(colour.ordinal());
+		}
+
+		public void sendName(String name) throws IOException {
+			byte[] nameBytes = name.getBytes();
+			int nameLength = nameBytes.length;
+			dataOutputStream.writeInt(nameLength);
+			dataOutputStream.write(nameBytes);
 		}
 
 		public void sendGameEnd(boolean hasWon) throws IOException {
@@ -88,6 +104,26 @@ public class Server implements Runnable {
 				return;
 			}
 
+			try {
+				int nameLength = dataInputStream.readInt();
+				byte[] nameBytes = dataInputStream.readNBytes(nameLength);
+				String name = new String(nameBytes);
+				if(colour == Colour.WHITE) {
+					blackClientHandler.sendName(name);
+					sentWhiteName = true;
+				} else {
+					whiteClientHandler.sendName(name);
+					sentBlackName = true;
+				}
+
+				System.out.println(clientHandlerListener);
+
+				if(clientHandlerListener != null)
+					clientHandlerListener.onNameRecieved(name);
+			} catch(IOException e) {
+
+			}
+
 			// TODO
 		}
 	}
@@ -98,13 +134,13 @@ public class Server implements Runnable {
 		try {
 			serverSocket = new ServerSocket(port);
 		} catch(IOException e) {
-			if(onStartErrorListener != null)
-				onStartErrorListener.onStartError();
+			if(serverListener != null)
+				serverListener.onStartError();
 			return;
 		}
 
-		if(onStartListener != null)
-			onStartListener.onStart();
+		if(serverListener != null)
+			serverListener.onStart();
 
 		Socket whiteSocket;
 		Socket blackSocket;
@@ -116,12 +152,29 @@ public class Server implements Runnable {
 			return;
 		}
 		
-		ClientHandler whiteClientHandler = new ClientHandler(whiteSocket, Colour.WHITE);
-		ClientHandler blackClientHandler = new ClientHandler(blackSocket, Colour.BLACK);
+		whiteClientHandler = new ClientHandler(whiteSocket, Colour.WHITE);
+		blackClientHandler = new ClientHandler(blackSocket, Colour.BLACK);
+
+		whiteClientHandler.setClientHandlerListener(new ClientHandlerListener() {
+			@Override
+			public void onNameRecieved(String name) {
+				System.out.println("white set name to " + name);
+			}
+		});
+		blackClientHandler.setClientHandlerListener(new ClientHandlerListener() {
+			@Override
+			public void onNameRecieved(String name) {
+				System.out.println("black set name to " + name);
+			}
+		});
+
+		whiteClientHandler.start();
+		blackClientHandler.start();
 
 		// TODO
 		Board board = new Board();
 		while(true) {
+
 
 			if(board.isInCheckmate(Colour.WHITE)) {
 				try {

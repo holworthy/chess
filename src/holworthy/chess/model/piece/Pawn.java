@@ -135,4 +135,9 @@ public class Pawn extends Piece{
 		}
 		return moves;
 	}
+
+	@Override
+	public int getType() {
+		return 0;
+	}
 }

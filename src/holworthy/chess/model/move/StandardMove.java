@@ -48,4 +48,9 @@ public class StandardMove extends Move {
 	public String toString() {
 		return "StandardMove(" + getFrom() + ", " + getTo() + ")";
 	}
+
+	@Override
+	public int getType() {
+		return 0;
+	}
 }

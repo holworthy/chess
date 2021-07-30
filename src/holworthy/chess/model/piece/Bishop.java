@@ -36,4 +36,9 @@ public class Bishop extends Piece{
 		}
 		return moves;
 	}
+
+	@Override
+	public int getType() {
+		return 2;
+	}
 }

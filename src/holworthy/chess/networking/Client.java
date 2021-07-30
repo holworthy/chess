@@ -6,12 +6,19 @@ import java.io.IOException;
 import java.net.Socket;
 
 import holworthy.chess.model.Chess;
+import holworthy.chess.model.move.CastlingMove;
+import holworthy.chess.model.move.EnPassantMove;
+import holworthy.chess.model.move.Move;
+import holworthy.chess.model.move.PromotionMove;
+import holworthy.chess.model.move.StandardMove;
+import holworthy.chess.model.piece.Piece;
 import holworthy.chess.model.piece.Piece.Colour;
 
 public class Client implements Runnable{
 	private Thread thread;
 	private String serverHost;
 	private int serverPort;
+	private String name;
 	private Chess chess;
 	private Colour colour;
 	private Socket socket;
@@ -39,6 +46,10 @@ public class Client implements Runnable{
 
 	public void setServerPort(int serverPort) {
 		this.serverPort = serverPort;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Chess getChess() {
@@ -85,7 +96,58 @@ public class Client implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		try {
+			byte[] nameBytes = name.getBytes();
+			int nameLength = nameBytes.length;
+			dOS.writeInt(nameLength);
+			dOS.write(nameBytes);
+		} catch(Exception e) {
+
+		}
 	}
+
+	private void sendPiece(Piece piece) throws IOException {
+		dOS.writeInt(piece.getColour().ordinal());
+		dOS.writeInt(piece.getType());
+	}
+
+	private void sendStandardMove(StandardMove standardMove) throws IOException {
+		dOS.writeInt(standardMove.getFrom().getX());
+		dOS.writeInt(standardMove.getFrom().getY());
+		dOS.writeInt(standardMove.getTo().getX());
+		dOS.writeInt(standardMove.getTo().getY());
+		sendPiece(standardMove.getMovedPiece());
+		sendPiece(standardMove.getCapturedPiece());
+	}
+
+	private void sendPromotionMove(PromotionMove promotionMove) throws IOException {
+		sendStandardMove(promotionMove);
+		sendPiece(promotionMove.getPromotionPiece());
+	}
+
+	private void sendCastlingMove(CastlingMove castlingMove) throws IOException {
+		dOS.writeInt(castlingMove.getSide().ordinal());
+	}
+
+	private void sendEnPassantMove(EnPassantMove enPassantMove) throws IOException {
+		sendStandardMove(enPassantMove);
+		dOS.writeInt(enPassantMove.getCaptured().getX());
+		dOS.writeInt(enPassantMove.getCaptured().getY());
+	}
+
+	public void sendMove(Move move) throws IOException {
+		dOS.writeInt(move.getType());
+		if(move.getClass() == StandardMove.class)
+			sendStandardMove((StandardMove) move);
+		else if(move.getClass() == PromotionMove.class)
+			sendPromotionMove((PromotionMove) move));
+		else if(move.getClass() == CastlingMove.class)
+			sendCastlingMove((CastlingMove) move);
+		else if(move.getClass() == EnPassantMove.class)
+			sendEnPassantMove((EnPassantMove) move);
+	}
+
 	// server host 
 	// server port
 	// chess
