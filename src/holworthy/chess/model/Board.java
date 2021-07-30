@@ -250,6 +250,18 @@ public class Board {
 		return true;
 	}
 
+	public ArrayList<Move> generateValidMoves(Colour colour) {
+		ArrayList<Move> allMoves = generateMoves(colour);
+		ArrayList<Move> validMoves = new ArrayList<>();
+		for(Move move : allMoves) {
+			if(makeMove(move)) {
+				validMoves.add(move);
+				undoMove();
+			}
+		}
+		return validMoves;
+	}
+
 	private boolean isValidRank(char rank) {
 		return rank >= '1' && rank <= '8';
 	}
