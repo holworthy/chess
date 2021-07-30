@@ -1,6 +1,8 @@
 package holworthy.chess.model;
 
-import holworthy.chess.model.move.EnPassantMove;
+import java.util.ArrayList;
+
+import holworthy.chess.model.move.Move;
 
 public class Chess {
 	private Board board;
@@ -13,27 +15,24 @@ public class Chess {
 		return board;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		Chess chess = new Chess();
 		Board board = chess.getBoard();
 
-		System.out.println(board);
-		board.makeMove("d2d4");
-		board.makeMove("h7h6");
-		board.makeMove("d4d5");
-		board.makeMove("c7c5");
-		// board.makeMove("d5c6");
-		System.out.println(board.makeMove(new EnPassantMove(board.getSquare(3, 3), board.getSquare(2, 2), board.getSquare(3, 3).getPiece(), board.getSquare(2, 3).getPiece(), board.getSquare(2, 3))));
-		System.out.println(board);
-
-		// board.undoMove();
-		// board.undoMove();
-		// board.undoMove();
-		// board.undoMove();
-		// board.undoMove();
-		// board.undoMove();
-		// board.undoMove();
-		// board.undoMove();
-		// System.out.println(board);
+		while(true) {
+			System.out.println(board);
+			ArrayList<Move> moves = board.generateMoves(board.getWhosTurn());
+			System.out.println("generated: " + moves.size());
+			for(Move move : moves) {
+				if(board.makeMove(move)) {
+					System.out.println(move);
+					break;
+				}
+			}
+					
+			System.out.println(board);
+			System.out.println("----------------------------------------------");
+			Thread.sleep(500);
+		}
 	}
 }

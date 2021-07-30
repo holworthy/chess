@@ -14,4 +14,9 @@ public class PromotionMove extends StandardMove {
 	public Piece getPromotionPiece() {
 		return promotionPiece;
 	}
+
+	@Override
+	public String toString() {
+		return "PromotionMove(" + getFrom() + ", " + getTo() + ")";
+	}
 }

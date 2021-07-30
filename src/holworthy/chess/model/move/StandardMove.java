@@ -43,4 +43,9 @@ public class StandardMove extends Move {
 		StandardMove move = (StandardMove) obj;
 		return getFrom().equals(move.getFrom()) && getTo().equals(move.getTo());
 	}
+
+	@Override
+	public String toString() {
+		return "StandardMove(" + getFrom() + ", " + getTo() + ")";
+	}
 }

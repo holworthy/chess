@@ -72,7 +72,10 @@ public class Board {
 		return string;
 	}
 
-	// TODO: en passant
+	public Piece.Colour getWhosTurn() {
+		return whosTurn;
+	}
+
 	public ArrayList<Move> generateMoves(Piece.Colour colour) {
 		ArrayList<Move> moves = new ArrayList<>();
 

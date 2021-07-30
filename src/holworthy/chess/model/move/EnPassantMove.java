@@ -14,4 +14,9 @@ public class EnPassantMove extends StandardMove {
 	public Square getCaptured() {
 		return captured;
 	}
+
+	@Override
+	public String toString() {
+		return "EnPassantMove(" + getFrom() + ", " + getTo() + ")";
+	}
 }

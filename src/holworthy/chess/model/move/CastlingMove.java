@@ -14,4 +14,9 @@ public class CastlingMove extends Move {
 	public Side getSide() {
 		return side;
 	}
+
+	@Override
+	public String toString() {
+		return "CastlingMove(" + side + ")";
+	}
 }
