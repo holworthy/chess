@@ -21,8 +21,9 @@ public class Chess {
 
 		while(true) {
 			System.out.println(board);
-			ArrayList<Move> moves = board.generateMoves(board.getWhosTurn());
-			System.out.println("generated: " + moves.size());
+			ArrayList<Move> moves = board.generateValidMoves(board.getWhosTurn());
+			if(moves.size() == 0)
+				break;
 			for(Move move : moves) {
 				if(board.makeMove(move)) {
 					System.out.println(move);
@@ -32,7 +33,6 @@ public class Chess {
 					
 			System.out.println(board);
 			System.out.println("----------------------------------------------");
-			Thread.sleep(500);
 		}
 	}
 }
