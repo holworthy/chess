@@ -2,7 +2,6 @@ package holworthy.chess.model;
 
 import java.util.ArrayList;
 
-import holworthy.chess.model.move.StandardMove;
 import holworthy.chess.model.move.CastlingMove;
 import holworthy.chess.model.move.CastlingMove.Side;
 import holworthy.chess.model.move.EnPassantMove;
@@ -161,7 +160,7 @@ public class Board {
 
 	public boolean makeMove(Move move) {
 		// TODO: remove second half once Pawn is fixed
-		if(!generateMoves(whosTurn).contains(move) && !(move instanceof EnPassantMove))
+		if(!generateMoves(whosTurn).contains(move))
 			return false;
 
 		if(move instanceof StandardMove) {
